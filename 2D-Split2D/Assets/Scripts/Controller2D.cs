@@ -11,14 +11,21 @@ public class Controller2D : RaycastController {
 	public float maxClimbAngle = 60;
     public float maxDescendAngle = 75;
     Player PlayerScript;
+    Player PlayerScript2;
+
     GameObject PlayerGameobj;
- 
-	public CollisionInfo collisions;
+    GameObject PlayerGameobj2;
+
+    public CollisionInfo collisions;
     public override void Start()
     {
         base.Start();
         PlayerGameobj = GameObject.FindGameObjectWithTag("Player");
+        PlayerGameobj2 = GameObject.FindGameObjectWithTag("Player2");
+
         PlayerScript = PlayerGameobj.GetComponent<Player>();
+        PlayerScript2 = PlayerGameobj.GetComponent<Player>();
+
         collisions.faceDirection = 1;
     }
 
@@ -78,7 +85,7 @@ public class Controller2D : RaycastController {
         }
 
 		for (int i = 0; i < horizonalRayCount; i ++) {
-			Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
+            Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
 			rayOrigin += Vector2.up * (horizontalRaySpacing * i);
 			RaycastHit2D hit = Physics2D.Raycast (rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
 
@@ -105,9 +112,10 @@ public class Controller2D : RaycastController {
                     }
 					ClimbSlope (ref velocity, slopeAngle);
 					velocity.x += distanceToSlopeStart * directionX;
-				}
+ 
+                }
 
-				if (!collisions.climbingSlope || slopeAngle > maxClimbAngle) {
+                if (!collisions.climbingSlope || slopeAngle > maxClimbAngle) {
 					velocity.x = (hit.distance - skinWidth) * directionX;
 					rayLength = hit.distance;
                      if (collisions.climbingSlope)
@@ -117,14 +125,23 @@ public class Controller2D : RaycastController {
 					}
                     if(slopeAngle <= 90)
                     {
-                        Debug.Log("Too steep");
-                        PlayerScript.canJump = false;
+                        if (tag == "Player")
+                        {
+                            Debug.Log("Too steep");
+                            PlayerScript.canJump = false;
+                        }
+                        else if(tag == "Player2")
+                        {
+                            Debug.Log("Too steep2");
+                            PlayerScript2.canJump = false;
+
+                        }
                     }
 
                     collisions.left = directionX == -1;
-					collisions.right = directionX == 1;
-				}
-                 
+                    collisions.right = directionX == 1;
+                }
+
 
             }
         }
@@ -152,20 +169,21 @@ public class Controller2D : RaycastController {
             // CHECKS IF PLAYER IS GROUNDED/Colliding with anything on its lower hitbox
 			if (hit)
             {
-                PlayerScript.canJump = true;
 
                 velocity.y = (hit.distance - skinWidth) * directionY;
 				rayLength = hit.distance;
+                PlayerScript.canJump = true;
                 // checks if theres a slope
 				if (collisions.climbingSlope)
                 {
-					velocity.x = velocity.y / Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
-				}
+                    velocity.x = velocity.y / Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
+                }
 
-				collisions.below = directionY == -1;
+                collisions.below = directionY == -1;
 				collisions.above = directionY == 1;
 			}
 	    }
+
         if(collisions.climbingSlope)
         {
             float DirectionX = Mathf.Sign(velocity.x);

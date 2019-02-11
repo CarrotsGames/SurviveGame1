@@ -26,6 +26,8 @@ public class Player : MonoBehaviour {
 
     //refrences the player Gameobject 
     GameObject PlayerGameobj;
+    GameObject PlayerGameobj2;
+
     // grabs the start point of the level
     GameObject levelStart;
     // grabs the end point of the level
@@ -64,11 +66,14 @@ public class Player : MonoBehaviour {
         controller = GetComponent<Controller2D>();
         player = GetComponent<RaycastController>();
         PlayerGameobj = GameObject.FindGameObjectWithTag("Player");
+        PlayerGameobj2 = GameObject.FindGameObjectWithTag("Player2");
+
         levelStart = GameObject.FindGameObjectWithTag("LevelStart");
 
         ResetPosition = levelStart.transform.position + PlayerGameobj.GetComponent<Controller2D>().StartOffset;
         PlayerGameobj.transform.position = levelStart.transform.position + StartOffset;
-
+        ResetPosition = levelStart.transform.position + PlayerGameobj2.GetComponent<Controller2D>().StartOffset;
+        PlayerGameobj2.transform.position = levelStart.transform.position + StartOffset;
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         canJump = true;
@@ -205,7 +210,7 @@ public class Player : MonoBehaviour {
  
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player2")
         {
             Debug.Log("Player");
         }

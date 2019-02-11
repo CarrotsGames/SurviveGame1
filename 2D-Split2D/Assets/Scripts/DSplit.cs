@@ -8,6 +8,8 @@ public class DSplit : MonoBehaviour {
 	public Color bg2;					//colour slot two
     PostEffectScript CameraShader;
     GameObject PlayerGameObj;
+    GameObject PlayerGameObj2;
+
     GameObject cameraShaderScript;
     GameObject backDrop;
 	private GameObject D1;				//Dimensions 1 group
@@ -30,7 +32,8 @@ public class DSplit : MonoBehaviour {
                                         //------------------------------------------------------------------------------------------------------------------
     void Start() {                      //starts when the game is launched
         PlayerGameObj = GameObject.FindGameObjectWithTag("Player");
- 
+        PlayerGameObj2 = GameObject.FindGameObjectWithTag("Player2");
+
         cameraObject = GameObject.FindGameObjectWithTag("MainCamera");          //finds the "MainCamera" object tag
         D1 = GameObject.FindGameObjectWithTag("D1");                            //finds the "D1" object tag
         D2 = GameObject.FindGameObjectWithTag("D2");                           //finds the "D2" object tag
@@ -83,6 +86,7 @@ public class DSplit : MonoBehaviour {
 	private void SwitchD(){
 		if (state == 1) {
             D2.transform.GetChild(0).GetComponentInChildren<Player>().enabled = false;
+            PlayerGameObj2.GetComponent<Controller2D>().enabled = false;
 
             // Sets Dimension1 Objects box collider to true 
             for (int i = 0; i < D1.transform.childCount; i++) {
@@ -108,6 +112,7 @@ public class DSplit : MonoBehaviour {
         }
         if (state == 2) {
             D1.transform.GetChild(0).GetComponentInChildren<Player>().enabled = false;
+            PlayerGameObj.GetComponent<Controller2D>().enabled = false;
 
             for (int i = 0; i < D2.transform.childCount; i++) {
                 D2DimensionController();
@@ -135,12 +140,13 @@ public class DSplit : MonoBehaviour {
     private void D1DimensionController()
     {
         D1.transform.GetChild(0).GetComponentInChildren<Player>().enabled = true;
-
+        PlayerGameObj.GetComponent<Controller2D>().enabled = true;
         Debug.Log("DIMENSION1");
     }
     private void D2DimensionController()
     {
         D2.transform.GetChild(0).GetComponentInChildren<Player>().enabled = true;
+        PlayerGameObj2.GetComponent<Controller2D>().enabled = true;
 
         Debug.Log("DIMENSION2");
 
