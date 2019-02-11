@@ -7,8 +7,9 @@ public class DSplit : MonoBehaviour {
 	public Color bg1;					//colour slot one 
 	public Color bg2;					//colour slot two
     PostEffectScript CameraShader;
+    GameObject PlayerGameObj;
     GameObject cameraShaderScript;
-    GameObject Test;
+    GameObject backDrop;
 	private GameObject D1;				//Dimensions 1 group
 	private GameObject D2;				//Dimensions 2 group
 	public Material yellow;				//colour yellow material
@@ -28,13 +29,15 @@ public class DSplit : MonoBehaviour {
                                         //				Void
                                         //------------------------------------------------------------------------------------------------------------------
     void Start() {                      //starts when the game is launched
+        PlayerGameObj = GameObject.FindGameObjectWithTag("Player");
+ 
         cameraObject = GameObject.FindGameObjectWithTag("MainCamera");          //finds the "MainCamera" object tag
         D1 = GameObject.FindGameObjectWithTag("D1");                            //finds the "D1" object tag
         D2 = GameObject.FindGameObjectWithTag("D2");                           //finds the "D2" object tag
         cameraShaderScript = GameObject.FindGameObjectWithTag("MainCamera");
         CameraShader = cameraShaderScript.GetComponent<PostEffectScript>();
-        Test = GameObject.FindGameObjectWithTag("BackDrop");
-        Test.SetActive(false);
+        backDrop = GameObject.FindGameObjectWithTag("BackDrop");
+        backDrop.SetActive(false);
         SwitchD (); 															//calls the SwitchD void 
 	}
 	//------------------------------------------------------------------------------------------------------------------
@@ -48,15 +51,16 @@ public class DSplit : MonoBehaviour {
 	//------------------------------------------------------------------------------------------------------------------
 
 	void Update (){ 					//updates ever frame of the game
-		if (XCI.GetButtonDown (XboxButton.X)) { 						//if we get xbox butten X on tap
+		if (XCI.GetButtonDown (XboxButton.X))
+        { 						//if we get xbox butten X on tap
 
 			if (state == 1) {
                 CameraShader.enabled = true;
-                Test.SetActive(true);
+                backDrop.SetActive(true);
                   state = 2;												//then make it 2
 			} else if (state == 2) {
                 CameraShader.enabled = false;
-                Test.SetActive(false);
+                backDrop.SetActive(false);
 
                 //however if state is already 2
                 state = 1;												//then make it 1
@@ -78,37 +82,67 @@ public class DSplit : MonoBehaviour {
 	//-----------------------------------------------------------------------------------------------------------------
 	private void SwitchD(){
 		if (state == 1) {
+            D2.transform.GetChild(0).GetComponentInChildren<Player>().enabled = false;
+
             // Sets Dimension1 Objects box collider to true 
-			for (int i = 0; i < D1.transform.childCount; i++) {
+            for (int i = 0; i < D1.transform.childCount; i++) {
+
+                D1DimensionController();
 
 
-				D1.transform.GetChild (i).GetComponent<BoxCollider2D> ().enabled = true;
-				D1.transform.GetChild (i).GetComponent<Renderer> ().material = yellow;
-			}
-		    // Sets Dimension2 Objects box collider to false
-			for (int i = 0; i < D2.transform.childCount; i++) {
-				D2.transform.GetChild (i).GetComponent<BoxCollider2D> ().enabled = false;
+                D1.transform.GetChild (i).GetComponent<BoxCollider2D> ().enabled = true;
+                D1.transform.GetChild (i).GetComponent<Renderer> ().material = yellow;
+                D1.transform.GetChild(0).GetComponent<BoxCollider2D>().enabled = true;
+            }
+            // Sets Dimension2 Objects box collider to false
+            for (int i = 0; i < D2.transform.childCount; i++) {
+                D1DimensionController();
+
+                D2.transform.GetChild (i).GetComponent<BoxCollider2D> ().enabled = false;
 				D2.transform.GetChild (i).GetComponent<Renderer> ().material = tPurple;
-
-			}	
-			cameraObject.GetComponent<Camera> ().backgroundColor = bg1;
+                D2.transform.GetChild(0).GetComponent<BoxCollider2D>().enabled = true;
+            }
+            cameraObject.GetComponent<Camera> ().backgroundColor = bg1;
 			cameraObject.GetComponent<Camera> ().backgroundColor = bg2;
+ 
+        }
+        if (state == 2) {
+            D1.transform.GetChild(0).GetComponentInChildren<Player>().enabled = false;
 
-		}
-		if (state == 2) {
-
-			for (int i = 0; i < D2.transform.childCount; i++) {
+            for (int i = 0; i < D2.transform.childCount; i++) {
+                D2DimensionController();
 
 
-				D2.transform.GetChild (i).GetComponent<BoxCollider2D> ().enabled = true;
+                D2.transform.GetChild (i).GetComponent<BoxCollider2D> ().enabled = true;
 				D2.transform.GetChild (i).GetComponent<Renderer> ().material = purple;
-			}
-			for (int i = 0; i < D1.transform.childCount; i++) {
-				D1.transform.GetChild (i).GetComponent<BoxCollider2D> ().enabled = false;
+                D2.transform.GetChild(0).GetComponent<BoxCollider2D>().enabled = true;
+
+            }
+            for (int i = 0; i < D1.transform.childCount; i++) {
+                D2DimensionController();
+
+                D1.transform.GetChild (i).GetComponent<BoxCollider2D> ().enabled = false;
 				D1.transform.GetChild (i).GetComponent<Renderer> ().material = tYellow;
-			}
-			cameraObject.GetComponent<Camera> ().backgroundColor = bg2;
+                D1.transform.GetChild(0).GetComponent<BoxCollider2D>().enabled = true;
+
+            }
+            cameraObject.GetComponent<Camera> ().backgroundColor = bg2;
 			cameraObject.GetComponent<Camera> ().backgroundColor = bg1;
-		}
-	}
+
+        }
+    }
+
+    private void D1DimensionController()
+    {
+        D1.transform.GetChild(0).GetComponentInChildren<Player>().enabled = true;
+
+        Debug.Log("DIMENSION1");
+    }
+    private void D2DimensionController()
+    {
+        D2.transform.GetChild(0).GetComponentInChildren<Player>().enabled = true;
+
+        Debug.Log("DIMENSION2");
+
+    }
 }

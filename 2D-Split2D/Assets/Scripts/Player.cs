@@ -43,8 +43,8 @@ public class Player : MonoBehaviour {
     // Gives player the momentum of a wall jump to reach other wall
     public Vector2 wallJumpAction;
     // the velocity of the players x,y,z
-    Vector3 velocity;      
- 
+    Vector3 velocity;
+    public bool canJump;
     // prevents the players movement from being jaggedy 
     float velocityXSmoothing;
     //creates Orbitangle
@@ -71,6 +71,7 @@ public class Player : MonoBehaviour {
 
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+        canJump = true;
         print("Gravity: " + gravity + " Jump Velocity: " + jumpVelocity);
     }
     //------------------------------------------------------------------------------------------------------------------
@@ -92,26 +93,32 @@ public class Player : MonoBehaviour {
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
         bool isWallSliding = false;
+        // if the player is colliding with the wall in the air
         if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y <= 0)
         {
             isWallSliding = true;
+            // Makes player slide down the wall 
             if (velocity.y < -wallSlideSpeedCapacity)
             {
                 velocity.y = -wallSlideSpeedCapacity;
             }
+            // Counts down how long the player can slide down the wall 
             if (wallUnstickTime > 0)
             {
                 velocityXSmoothing = 0;
                 velocity.x = 0;
-                if (input.x != wallDirectionX && input.x != 0)
+                if (input.x != wallDirectionX && input.x != 0 && controller.maxClimbAngle == 90) 
                 {
                     wallUnstickTime -= Time.deltaTime;
+                    Debug.Log("WallStick");
                 }
+                // Resets unstick time
                 else
                 {
                     wallUnstickTime = wallStickTime;
                 }
             }
+            // Resets unstick time
             else
             {
                 wallUnstickTime = wallStickTime;
@@ -124,11 +131,11 @@ public class Player : MonoBehaviour {
                 velocity.y = 0;
             }
 
-            if (XCI.GetButtonDown(XboxButton.A))
+            if (XCI.GetButtonDown(XboxButton.A) && canJump)
             {
                 if (isWallSliding)
                 {
-                    if (wallDirectionX == input.x)
+                    if (wallDirectionX == input.x  )
                     {
                         velocity.x = -wallDirectionX * wallJumpClimb.x;
                         velocity.y = wallJumpClimb.y;
@@ -186,17 +193,26 @@ public class Player : MonoBehaviour {
 		transform.position = ResetPosition;
 		OrbitAngle = 0.01f;
 	}
-	//------------------------------------------------------------------------------------------------------------------
-	//		hideSword()
-	// Turns off the player sword after use
-	//
-	// Parma:
-	//				None
-	// Return:
-	//				Void
-	//------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
+    //		hideSword()
+    // Turns off the player sword after use
+    //
+    // Parma:
+    //				None
+    // Return:
+    //				Void
+    //------------------------------------------------------------------------------------------------------------------
+ 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            Debug.Log("Player");
+        }
+       
+    }
 
-	private void hideSword (){
+    private void hideSword (){
 		sword.SetActive (false);
 		sword2.SetActive (false);
 	}

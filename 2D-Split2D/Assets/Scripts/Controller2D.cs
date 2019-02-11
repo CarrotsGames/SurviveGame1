@@ -8,15 +8,17 @@ public class Controller2D : RaycastController {
  	public LayerMask collisionMask;
 
 	//Climbing angle
-	float maxClimbAngle = 80;
-    float maxDescendAngle = 75;
-
-
+	public float maxClimbAngle = 60;
+    public float maxDescendAngle = 75;
+    Player PlayerScript;
+    GameObject PlayerGameobj;
  
 	public CollisionInfo collisions;
     public override void Start()
     {
         base.Start();
+        PlayerGameobj = GameObject.FindGameObjectWithTag("Player");
+        PlayerScript = PlayerGameobj.GetComponent<Player>();
         collisions.faceDirection = 1;
     }
 
@@ -84,11 +86,12 @@ public class Controller2D : RaycastController {
 
 			if (hit) {
 
-				float slopeAngle = Vector2.Angle (hit.normal, Vector2.up);
+                float slopeAngle = Vector2.Angle (hit.normal, Vector2.up);
 
-				if (i == 0 && slopeAngle <= maxClimbAngle )
+ 				if (i == 0 && slopeAngle <= maxClimbAngle )
                 {
-                    if(collisions.descendingSlope)
+
+                    if (collisions.descendingSlope)
                     {
                         collisions.descendingSlope = false;
                         velocity = collisions.velocityOld;
@@ -107,17 +110,24 @@ public class Controller2D : RaycastController {
 				if (!collisions.climbingSlope || slopeAngle > maxClimbAngle) {
 					velocity.x = (hit.distance - skinWidth) * directionX;
 					rayLength = hit.distance;
-
-					if (collisions.climbingSlope) {
+                     if (collisions.climbingSlope)
+                    {
 						velocity.y = Mathf.Tan (collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs (velocity.x);
 
 					}
+                    if(slopeAngle <= 90)
+                    {
+                        Debug.Log("Too steep");
+                        PlayerScript.canJump = false;
+                    }
 
-					collisions.left = directionX == -1;
+                    collisions.left = directionX == -1;
 					collisions.right = directionX == 1;
 				}
-			}
-		}
+                 
+
+            }
+        }
 	}
 	//------------------------------------------------------------------------------------------------------------------
 	//		VerticalCollisions()
@@ -142,7 +152,9 @@ public class Controller2D : RaycastController {
             // CHECKS IF PLAYER IS GROUNDED/Colliding with anything on its lower hitbox
 			if (hit)
             {
- 				velocity.y = (hit.distance - skinWidth) * directionY;
+                PlayerScript.canJump = true;
+
+                velocity.y = (hit.distance - skinWidth) * directionY;
 				rayLength = hit.distance;
                 // checks if theres a slope
 				if (collisions.climbingSlope)
