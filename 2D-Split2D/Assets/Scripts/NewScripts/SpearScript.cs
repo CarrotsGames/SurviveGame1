@@ -11,7 +11,7 @@ public class SpearScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.gameObject.layer == 8)
+        if (collision.collider.gameObject.layer == 10)
         {
             Rb.isKinematic = true;
           //  Rb.simulated = false;
