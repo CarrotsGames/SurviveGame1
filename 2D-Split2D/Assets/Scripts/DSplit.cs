@@ -13,8 +13,10 @@ public class DSplit : MonoBehaviour {
     GameObject cameraShaderScript;
     GameObject backDrop;
 	private GameObject D1;				//Dimensions 1 group
-	private GameObject D2;				//Dimensions 2 group
-	public Material yellow;				//colour yellow material
+	private GameObject D2;
+    public Material DimensioSwapMat;
+    //Dimensions 2 group
+    public Material yellow;				//colour yellow material
 	public Material tYellow;			//colour transparent yellow material
 	public Material purple;				//colour purple material
 	public Material tPurple;			//colour transparent purple material
@@ -86,6 +88,9 @@ public class DSplit : MonoBehaviour {
 	private void SwitchD(){
 		if (state == 1) {
             D2.transform.GetChild(0).GetComponentInChildren<Player>().enabled = false;
+            D2.transform.GetChild(0).gameObject.layer = 8;
+            PlayerGameObj.GetComponent<Renderer>().material = yellow;
+
             PlayerGameObj2.GetComponent<Controller2D>().enabled = false;
 
             // Sets Dimension1 Objects box collider to true 
@@ -96,6 +101,7 @@ public class DSplit : MonoBehaviour {
 
                 D1.transform.GetChild (i).GetComponent<BoxCollider2D> ().enabled = true;
                 D1.transform.GetChild (i).GetComponent<Renderer> ().material = yellow;
+
                 D1.transform.GetChild(0).GetComponent<BoxCollider2D>().enabled = true;
             }
             // Sets Dimension2 Objects box collider to false
@@ -112,6 +118,9 @@ public class DSplit : MonoBehaviour {
         }
         if (state == 2) {
             D1.transform.GetChild(0).GetComponentInChildren<Player>().enabled = false;
+            D1.transform.GetChild(0).gameObject.layer = 8;
+            PlayerGameObj2.GetComponent<Renderer>().material = yellow;
+
             PlayerGameObj.GetComponent<Controller2D>().enabled = false;
 
             for (int i = 0; i < D2.transform.childCount; i++) {
@@ -120,6 +129,7 @@ public class DSplit : MonoBehaviour {
 
                 D2.transform.GetChild (i).GetComponent<BoxCollider2D> ().enabled = true;
 				D2.transform.GetChild (i).GetComponent<Renderer> ().material = purple;
+
                 D2.transform.GetChild(0).GetComponent<BoxCollider2D>().enabled = true;
 
             }
@@ -141,14 +151,18 @@ public class DSplit : MonoBehaviour {
     {
         D1.transform.GetChild(0).GetComponentInChildren<Player>().enabled = true;
         PlayerGameObj.GetComponent<Controller2D>().enabled = true;
-        Debug.Log("DIMENSION1");
+        D1.transform.GetChild(0).gameObject.layer = 9;
+        PlayerGameObj2.GetComponent<Renderer>().material = DimensioSwapMat;
+
+ 
     }
     private void D2DimensionController()
     {
         D2.transform.GetChild(0).GetComponentInChildren<Player>().enabled = true;
         PlayerGameObj2.GetComponent<Controller2D>().enabled = true;
+        D2.transform.GetChild(0).gameObject.layer = 9;
+        PlayerGameObj.GetComponent<Renderer>().material = DimensioSwapMat;
 
-        Debug.Log("DIMENSION2");
-
+ 
     }
 }

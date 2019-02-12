@@ -75,4 +75,37 @@ public class RaycastController : MonoBehaviour {
         public Vector2 bottomLeft, bottomRight;
 
     }
+    public struct CollisionInfo
+    {
+        // Checks for objects around player
+        public bool above, below;
+        public bool left, right;
+
+        // Checks if players is climbing/Descending slopes
+        public bool climbingSlope;
+        public bool descendingSlope;
+
+        public float slopeAngle, slopeAngleOld;
+        public int faceDirection;
+        public Vector3 velocityOld;
+        //------------------------------------------------------------------------------------------------------------------
+        //		Reset()
+        // resets all of the raycasting info 
+        //
+        // Param:
+        //				ref Vector3 velocity
+        // Return:
+        //				Void
+        //------------------------------------------------------------------------------------------------------------------
+        public void Reset()
+        {
+            above = below = false;
+            left = right = false;
+            climbingSlope = false;
+            descendingSlope = false;
+
+            slopeAngleOld = slopeAngle;
+            slopeAngle = 0;
+        }
+    }
 }

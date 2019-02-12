@@ -97,8 +97,7 @@ public class Controller2D : RaycastController {
 
  				if (i == 0 && slopeAngle <= maxClimbAngle )
                 {
-
-                    if (collisions.descendingSlope)
+                     if (collisions.descendingSlope)
                     {
                         collisions.descendingSlope = false;
                         velocity = collisions.velocityOld;
@@ -123,16 +122,14 @@ public class Controller2D : RaycastController {
 						velocity.y = Mathf.Tan (collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs (velocity.x);
 
 					}
-                    if(slopeAngle <= 90)
+                    if(slopeAngle < 90)
                     {
                         if (tag == "Player")
                         {
-                            Debug.Log("Too steep");
                             PlayerScript.canJump = false;
                         }
                         else if(tag == "Player2")
                         {
-                            Debug.Log("Too steep2");
                             PlayerScript2.canJump = false;
 
                         }
@@ -155,7 +152,8 @@ public class Controller2D : RaycastController {
 	// Return:
 	//				Void
 	//------------------------------------------------------------------------------------------------------------------
-	void VerticalCollisions (ref Vector3 velocity) {
+	void VerticalCollisions (ref Vector3 velocity)
+    {
 		float directionY = Mathf.Sign (velocity.y);
 		float rayLength = Mathf.Abs (velocity.y) + skinWidth;
         // Cosntantly checks raycast on Y axis 
@@ -167,14 +165,15 @@ public class Controller2D : RaycastController {
 
 			Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength,Color.red);
             // CHECKS IF PLAYER IS GROUNDED/Colliding with anything on its lower hitbox
+            // IF THE PLAYER IS WALKING ON FLAT GROUND
 			if (hit)
             {
-
                 velocity.y = (hit.distance - skinWidth) * directionY;
 				rayLength = hit.distance;
                 PlayerScript.canJump = true;
+ 
                 // checks if theres a slope
-				if (collisions.climbingSlope)
+                if (collisions.climbingSlope)
                 {
                     velocity.x = velocity.y / Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
                 }
@@ -183,7 +182,7 @@ public class Controller2D : RaycastController {
 				collisions.above = directionY == 1;
 			}
 	    }
-
+        // IF THE PLAYER IS WALKING UP A SLOPE
         if(collisions.climbingSlope)
         {
             float DirectionX = Mathf.Sign(velocity.x);
@@ -192,6 +191,7 @@ public class Controller2D : RaycastController {
             RaycastHit2D hit = Physics2D.Raycast(RayOrigin, Vector2.right * DirectionX, rayLength, collisionMask);
             if(hit)
             {
+ 
                 float SlopeAngle = Vector2.Angle(hit.normal, Vector2.up);
                 if(SlopeAngle != collisions.slopeAngle)
                 {
@@ -264,39 +264,7 @@ public class Controller2D : RaycastController {
 	// Return:
 	//				struct
 	//------------------------------------------------------------------------------------------------------------------
-	public struct CollisionInfo
-    {
-        // Checks for objects around player
-		public bool above, below;
-		public bool left, right;
-
-        // Checks if players is climbing/Descending slopes
-		public bool climbingSlope;
-        public bool descendingSlope;
-
-        public float slopeAngle, slopeAngleOld;
-        public int faceDirection;
-        public Vector3 velocityOld; 
-		//------------------------------------------------------------------------------------------------------------------
-		//		Reset()
-		// resets all of the raycasting info 
-		//
-		// Param:
-		//				ref Vector3 velocity
-		// Return:
-		//				Void
-		//------------------------------------------------------------------------------------------------------------------
-		public void Reset ()
-        {
-			above = below = false;
-			left = right = false;
-			climbingSlope = false;
-            descendingSlope = false;
-
-            slopeAngleOld = slopeAngle;
-			slopeAngle = 0;
-		}
-	}
+	
 	//------------------------------------------------------------------------------------------------------------------
 	//		NextScene()
 	// Loads the next scene

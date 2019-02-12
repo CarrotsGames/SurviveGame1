@@ -56,8 +56,8 @@ public class Player : MonoBehaviour {
     // resets players position in the world 
     public Vector3 ResetPosition;    
     // Refrences the raycast controller 
-    private RaycastController player;                                                
-
+    private RaycastController player;
+    public bool canPlayerMove;
     //refrences the Controller2D script
     Controller2D controller;                                                
                                                                        
@@ -67,7 +67,7 @@ public class Player : MonoBehaviour {
         player = GetComponent<RaycastController>();
         PlayerGameobj = GameObject.FindGameObjectWithTag("Player");
         PlayerGameobj2 = GameObject.FindGameObjectWithTag("Player2");
-
+        canPlayerMove = true;
         levelStart = GameObject.FindGameObjectWithTag("LevelStart");
 
         ResetPosition = levelStart.transform.position + PlayerGameobj.GetComponent<Controller2D>().StartOffset;
@@ -88,8 +88,14 @@ public class Player : MonoBehaviour {
     // Return:
     //				Void
     //------------------------------------------------------------------------------------------------------------------
-
-    void Update()
+    private void Update()
+    {
+        if (canPlayerMove)
+        {
+            Movement();
+        }
+    }
+    void Movement()
     {
         Vector2 input = new Vector2(XCI.GetAxis(XboxAxis.LeftStickX), XCI.GetAxis(XboxAxis.LeftStickY));
         int wallDirectionX = (controller.collisions.left) ? -1 : 1;
@@ -150,6 +156,7 @@ public class Player : MonoBehaviour {
                     {
                     //  velocity.x = -wallDirectionX * wallJumpOff.x;
                     //     velocity.y = wallJumpOff.y;
+                    Debug.Log("AH");
                     velocity.x = -wallDirectionX * wallJumpAction.x;
                     velocity.y = wallJumpAction.y;
                 }
@@ -171,16 +178,17 @@ public class Player : MonoBehaviour {
                 Invoke("hideSword", swordTime);
             }
 
-            if (XCI.GetButtonDown(XboxButton.RightBumper))
-            {
-                sword2.SetActive(true);
-                Invoke("hideSword", swordTime);
-            }
+            //if (XCI.GetButtonDown(XboxButton.RightBumper))
+            //{
+            //    sword2.SetActive(true);
+            //    Invoke("hideSword", swordTime);
+            //}
 
             velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
         }
      
+    
 	//------------------------------------------------------------------------------------------------------------------
 	//		ResetPlayer()
 	// Reset the player position
