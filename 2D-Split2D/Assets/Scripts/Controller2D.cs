@@ -80,7 +80,7 @@ public class Controller2D : RaycastController {
 
         if (Mathf.Abs(velocity.x) < skinWidth)
         {
-            rayLength = 2 * skinWidth;
+            rayLength = 10 * skinWidth;
 
         }
 
@@ -155,7 +155,7 @@ public class Controller2D : RaycastController {
 	void VerticalCollisions (ref Vector3 velocity)
     {
 		float directionY = Mathf.Sign (velocity.y);
-		float rayLength = Mathf.Abs (velocity.y) + skinWidth;
+		float rayLength = Mathf.Abs (velocity.y) + skinWidth ;
         // Cosntantly checks raycast on Y axis 
 		for (int i = 0; i < verticalRayCount; i ++)
         {
@@ -169,7 +169,7 @@ public class Controller2D : RaycastController {
 			if (hit)
             {
                 velocity.y = (hit.distance - skinWidth) * directionY;
-				rayLength = hit.distance;
+				rayLength = hit.distance + 1;
                 PlayerScript.canJump = true;
  
                 // checks if theres a slope
