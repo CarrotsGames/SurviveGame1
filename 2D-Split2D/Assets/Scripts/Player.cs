@@ -146,12 +146,12 @@ public class Player : MonoBehaviour {
             {
                 if (isWallSliding)
                 {
-                    if (wallDirectionX == input.x  )
+                    if (wallDirectionX == input.x )
                     {
+                    Debug.Log("WallJump");
                         velocity.x = -wallDirectionX * wallJumpClimb.x;
                         velocity.y = wallJumpClimb.y;
-
-                    }
+                      }
                     else if (input.x == 0)
                     {
                     //  velocity.x = -wallDirectionX * wallJumpOff.x;
@@ -159,32 +159,36 @@ public class Player : MonoBehaviour {
                     Debug.Log("AH");
                     velocity.x = -wallDirectionX * wallJumpAction.x;
                     velocity.y = wallJumpAction.y;
+
                 }
-                    else
+                else
                     {
                         velocity.x = -wallDirectionX * wallJumpAction.x;
                         velocity.y = wallJumpAction.y;
-                    }
+
                 }
+            }
                 if (controller.collisions.below)
                 {
-                    velocity.y = jumpVelocity;
-                }
+                velocity.y = jumpVelocity;
+ 
             }
 
-            if (XCI.GetButtonDown(XboxButton.LeftBumper))
-            {
-                sword.SetActive(true);
-                Invoke("hideSword", swordTime);
-            }
+        }
 
-            //if (XCI.GetButtonDown(XboxButton.RightBumper))
-            //{
-            //    sword2.SetActive(true);
-            //    Invoke("hideSword", swordTime);
-            //}
+        //if (XCI.GetButtonDown(XboxButton.LeftBumper))
+        //{
+        //    sword.SetActive(true);
+        //    Invoke("hideSword", swordTime);
+        //}
 
-            velocity.y += gravity * Time.deltaTime;
+        //if (XCI.GetButtonDown(XboxButton.RightBumper))
+        //{
+        //    sword2.SetActive(true);
+        //    Invoke("hideSword", swordTime);
+        //}
+ 
+        velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
         }
      

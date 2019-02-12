@@ -80,7 +80,7 @@ public class Controller2D : RaycastController {
 
         if (Mathf.Abs(velocity.x) < skinWidth)
         {
-            rayLength = 10 * skinWidth;
+            rayLength = 2 * skinWidth;
 
         }
 

@@ -36,32 +36,38 @@ public class SpearThrowScript : MonoBehaviour {
                 coolDown = 1;
             }
         }
-         
-        if (XCI.GetButton(XboxButton.RightBumper))
+        if (XCI.GetAxis(XboxAxis.LeftStickX) >= 0.25f)
         {
-            Debug.Log("RB DOWN");
+            Vector3 TargetAngle = transform.eulerAngles = 0 * Vector3.up;
+            transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, TargetAngle, 3);
+             
+        }
+        if (XCI.GetAxis(XboxAxis.LeftStickX) <= -0.25f )
+        {
+           
+            Vector3 TargetAngle = transform.eulerAngles = 180f * Vector3.up;
+            transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, TargetAngle, 3);
+    
+        }
+        if (XCI.GetButton(XboxButton.RightBumper) && canShoot)
+        {
+              
+             if (transform.rotation.y <= 0)
+             {
+                 GameObject Go = (GameObject)Instantiate(Spear, (Vector2)transform.position + offset * transform.localScale.x, Quaternion.identity);
+                 Go.GetComponent<Rigidbody2D>().velocity = new Vector2(Velocity.x * transform.localScale.x, Velocity.y);
+                 canShoot = false;
+             }
 
-             if (XCI.GetAxis(XboxAxis.LeftStickX) >= 0.25 && canShoot)
-            {
- 
-               GameObject Go = (GameObject)Instantiate(Spear,(Vector2)transform.position + offset * transform.localScale.x, Quaternion.identity);
-               Go.GetComponent<Rigidbody2D>().velocity = new Vector2(Velocity.x * transform.localScale.x, Velocity.y);
-               canShoot = false;
-            
-            }
-            if (XCI.GetAxis(XboxAxis.LeftStickX) <= -0.25 && canShoot)
+            else if (transform.rotation.y >= 0)
             {
                 GameObject Go = (GameObject)Instantiate(Spear, (Vector2)transform.position - offset * transform.localScale.x, Quaternion.identity);
-                Go.GetComponent<Rigidbody2D>().velocity = new Vector2(Velocity.x * -transform.localScale.x, Velocity.y);
+                Go.GetComponent<Rigidbody2D>().velocity = new Vector2(-Velocity.x * transform.localScale.x, Velocity.y);
                 canShoot = false;
-            };
-        }
-        else if (XCI.GetButtonUp(XboxButton.RightBumper))
+            }
 
-        {
-            PlayerScript.canPlayerMove = true;
         }
-
+     
          
     }
 
