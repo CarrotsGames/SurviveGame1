@@ -18,7 +18,7 @@ public class XInputTestCS : MonoBehaviour
     void Update()
     {
         // Find a PlayerIndex, for a single player game
-        // Will find the first controller that is connected ans use it
+        // Will find the first playerphys that is connected ans use it
         if (!playerIndexSet || !prevState.IsConnected)
         {
             for (int i = 0; i < 4; ++i)

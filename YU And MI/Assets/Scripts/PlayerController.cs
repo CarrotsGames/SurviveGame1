@@ -12,10 +12,17 @@ public class PlayerController : MonoBehaviour {
     public float AccelerationTimeGrounded = .1f;
     public float MoveSpeed = 6;
 
+    public Vector2 WallJumpClimb;
+    public Vector2 WallJumpOff;
+    public Vector2 WallLeap;
+
+    public float WallSlideSpeedMax;
+
+
     public float Gravity;
     public float JumpVelocity;
     public bool CanJump;
-    Vector3 Veloctiy;
+    Vector3 Velocity;
     PlayerPhysics playerphys;
     private void Start()
     {
@@ -27,25 +34,56 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
-
        Vector2 Input = new Vector2(XCI.GetAxis(XboxAxis.LeftStickX), (XCI.GetAxis(XboxAxis.LeftStickY)));
+        int WallDirectionX = (playerphys.Collisions.Left) ? -1 : 1;
+        float TargetVelocity = Input.x * MoveSpeed;
+        Velocity.x = Mathf.SmoothDamp(Velocity.x, TargetVelocity, ref TargetVelocity, (playerphys.Collisions.Below) ? AccelerationTimeGrounded : AccelerationTimeAirBourne);
+
+        bool IsWallSliding = false;
+        if((playerphys.Collisions.Left || playerphys.Collisions.Right) && !playerphys.Collisions.Below && Velocity.y < 0)
+        {
+            IsWallSliding = true;
+             if(Velocity.y < -WallSlideSpeedMax)
+            {
+                Velocity.y = -WallSlideSpeedMax;
+            }
+        }
         if (playerphys.Collisions.Above || playerphys.Collisions.Below)
         {
-            Veloctiy.y = 0;
-        }
-        if (XCI.GetButtonDown(XboxButton.A) && CanJump)
-       {
-           Veloctiy.y = JumpVelocity;
-           CanJump = false;
-           Debug.Log("Jump");
-       }
-        float TargetVelocity = Input.x * MoveSpeed;
-        Veloctiy.x = Mathf.SmoothDamp(Veloctiy.x, TargetVelocity, ref TargetVelocity, (playerphys.Collisions.Below) ? AccelerationTimeGrounded : AccelerationTimeAirBourne);
+            Debug.Log("FloorCollision");
 
-        Veloctiy.y += Gravity * Time.deltaTime;
-        playerphys.Move(Veloctiy * Time.deltaTime);
-        Debug.Log(Veloctiy.y);
-    }
+            Velocity.y = 0;
+        }
+        if (XCI.GetButtonDown(XboxButton.A))
+        {
+            if (IsWallSliding)
+            {
+                if(WallDirectionX == Input.x)
+                {
+                    Velocity.x = -WallDirectionX * WallJumpClimb.x;
+                    Velocity.y = WallJumpClimb.y;
+                }
+                else if(Input.x == 0)
+                {
+                    Velocity.x = -WallDirectionX * WallJumpOff.x;
+                    Velocity.y = WallJumpOff.y;
+                }
+                else
+                {
+                    Velocity.x = -WallDirectionX * WallLeap.x;
+                    Velocity.y = WallLeap.y;
+                }
+            }
+            if (playerphys.Collisions.Above)
+            {
+                Velocity.y = JumpVelocity;
+            }
+        }
+      
+
+        Velocity.y += Gravity * Time.deltaTime;
+        playerphys.Move(Velocity * Time.deltaTime);
+     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {

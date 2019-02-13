@@ -7,7 +7,7 @@ public class MovePlayer : MonoBehaviour
 	
 	public float jumpImpulse;
 	public float maxMoveSpeed;
-	public XboxController controller;
+	public Xboxplayerphys playerphys;
 	
 	public Material matRed;
 	public Material matGreen;
@@ -38,12 +38,12 @@ public class MovePlayer : MonoBehaviour
 	// Start
 	void Start () 
 	{
-		switch(controller)
+		switch(playerphys)
 		{
-			case XboxController.First: GetComponent<Renderer>().material = matRed; break;
-			case XboxController.Second: GetComponent<Renderer>().material = matGreen; break;
-			case XboxController.Third: GetComponent<Renderer>().material = matBlue; break;
-			case XboxController.Fourth: GetComponent<Renderer>().material = matYellow; break;
+			case Xboxplayerphys.First: GetComponent<Renderer>().material = matRed; break;
+			case Xboxplayerphys.Second: GetComponent<Renderer>().material = matGreen; break;
+			case Xboxplayerphys.Third: GetComponent<Renderer>().material = matBlue; break;
+			case Xboxplayerphys.Fourth: GetComponent<Renderer>().material = matYellow; break;
 		}
 
 
@@ -56,18 +56,18 @@ public class MovePlayer : MonoBehaviour
 			int queriedNumberOfCtrlrs = XCI.GetNumPluggedCtrlrs();
 			if(queriedNumberOfCtrlrs == 1)
 			{
-				Debug.Log("Only " + queriedNumberOfCtrlrs + " Xbox controller plugged in.");
+				Debug.Log("Only " + queriedNumberOfCtrlrs + " Xbox playerphys plugged in.");
 			}
 			else if (queriedNumberOfCtrlrs == 0)
 			{
-				Debug.Log("No Xbox controllers plugged in!");
+				Debug.Log("No Xbox playerphyss plugged in!");
 			}
 			else
 			{
-				Debug.Log(queriedNumberOfCtrlrs + " Xbox controllers plugged in.");
+				Debug.Log(queriedNumberOfCtrlrs + " Xbox playerphyss plugged in.");
 			}
 			
-			XCI.DEBUG_LogControllerNames();
+			XCI.DEBUG_LogplayerphysNames();
 		}
 	}
 	
@@ -78,14 +78,14 @@ public class MovePlayer : MonoBehaviour
 		GameObject bulletReference = null;
 		
 		// Jump (Left Stick)
-		if(XCI.GetButtonDown(XboxButton.LeftStick, controller) && canJump)
+		if(XCI.GetButtonDown(XboxButton.LeftStick, playerphys) && canJump)
 		{
 			canJump = false;
 			GetComponent<Rigidbody>().AddRelativeForce(0.0f, jumpImpulse, 0.0f, ForceMode.Impulse);
 		}
 		
 		// Slam (Right Stick)
-		if(XCI.GetButtonDown(XboxButton.RightStick, controller) && !canJump)
+		if(XCI.GetButtonDown(XboxButton.RightStick, playerphys) && !canJump)
 		{
 			GetComponent<Rigidbody>().AddRelativeForce(0.0f, (-jumpImpulse * 1.5f), 0.0f, ForceMode.Impulse);
 		}
@@ -99,22 +99,22 @@ public class MovePlayer : MonoBehaviour
 		
 		if(bulletTimer <= 0.0f)
 		{
-			if(XCI.GetButton(XboxButton.A, controller))
+			if(XCI.GetButton(XboxButton.A, playerphys))
 			{
 				Instantiate(laserAPrefab, transform.position, laserAPrefab.transform.rotation);
 				bulletTimer = MAX_BUL_TME;
 			}
-			if(XCI.GetButton(XboxButton.B, controller))
+			if(XCI.GetButton(XboxButton.B, playerphys))
 			{
 				Instantiate(laserBPrefab, transform.position, laserBPrefab.transform.rotation);
 				bulletTimer = MAX_BUL_TME;
 			}
-			if(XCI.GetButton(XboxButton.X, controller))
+			if(XCI.GetButton(XboxButton.X, playerphys))
 			{
 				Instantiate(laserXPrefab, transform.position, laserXPrefab.transform.rotation);
 				bulletTimer = MAX_BUL_TME;
 			}
-			if(XCI.GetButton(XboxButton.Y, controller))
+			if(XCI.GetButton(XboxButton.Y, playerphys))
 			{
 				Instantiate(laserYPrefab, transform.position, laserYPrefab.transform.rotation);
 				bulletTimer = MAX_BUL_TME;
@@ -123,8 +123,8 @@ public class MovePlayer : MonoBehaviour
 		
 		// Left stick movement
 		newPosition = transform.position;
-		float axisX = XCI.GetAxis(XboxAxis.LeftStickX, controller);
-		float axisY = XCI.GetAxis(XboxAxis.LeftStickY, controller);
+		float axisX = XCI.GetAxis(XboxAxis.LeftStickX, playerphys);
+		float axisY = XCI.GetAxis(XboxAxis.LeftStickY, playerphys);
 		float newPosX = newPosition.x + (axisX * maxMoveSpeed * Time.deltaTime);
 		float newPosZ = newPosition.z + (axisY * maxMoveSpeed * Time.deltaTime);
 		newPosition = new Vector3(newPosX, transform.position.y, newPosZ);
@@ -133,8 +133,8 @@ public class MovePlayer : MonoBehaviour
 		
 		// Right stick movement
 		newPosition = transform.position;
-		axisX = XCI.GetAxis(XboxAxis.RightStickX, controller);
-		axisY = XCI.GetAxis(XboxAxis.RightStickY, controller);
+		axisX = XCI.GetAxis(XboxAxis.RightStickX, playerphys);
+		axisY = XCI.GetAxis(XboxAxis.RightStickY, playerphys);
 		newPosX = newPosition.x + (axisX * maxMoveSpeed * 0.3f * Time.deltaTime);
 		newPosZ = newPosition.z + (axisY * maxMoveSpeed * 0.3f * Time.deltaTime);
 		newPosition = new Vector3(newPosX, transform.position.y, newPosZ);
@@ -160,7 +160,7 @@ public class MovePlayer : MonoBehaviour
 		}
 		if(dpUpBulletTimer <= 0.0f)
 		{
-			if(XCI.GetDPad(XboxDPad.Up, controller))
+			if(XCI.GetDPad(XboxDPad.Up, playerphys))
 			{
 				bulletReference = Instantiate(laserBumpPrefab, transform.position, laserYPrefab.transform.rotation) as GameObject;
 				bulletReference.transform.localScale = new Vector3(0.1f, 0.1f, 1.0f);
@@ -169,7 +169,7 @@ public class MovePlayer : MonoBehaviour
 		}
 		if(dpDownBulletTimer <= 0.0f)
 		{
-			if(XCI.GetDPad(XboxDPad.Down, controller))
+			if(XCI.GetDPad(XboxDPad.Down, playerphys))
 			{
 				bulletReference = Instantiate(laserBumpPrefab, transform.position, laserAPrefab.transform.rotation) as GameObject;
 				bulletReference.transform.localScale = new Vector3(0.1f, 0.1f, 1.0f);
@@ -178,7 +178,7 @@ public class MovePlayer : MonoBehaviour
 		}
 		if(dpLeftBulletTimer <= 0.0f)
 		{
-			if(XCI.GetDPad(XboxDPad.Left, controller))
+			if(XCI.GetDPad(XboxDPad.Left, playerphys))
 			{
 				bulletReference = Instantiate(laserBumpPrefab, transform.position, laserXPrefab.transform.rotation) as GameObject;
 				bulletReference.transform.localScale = new Vector3(0.1f, 0.1f, 1.0f);
@@ -187,7 +187,7 @@ public class MovePlayer : MonoBehaviour
 		}
 		if(dpRightBulletTimer <= 0.0f)
 		{
-			if(XCI.GetDPad(XboxDPad.Right, controller))
+			if(XCI.GetDPad(XboxDPad.Right, playerphys))
 			{
 				bulletReference = Instantiate(laserBumpPrefab, transform.position, laserBPrefab.transform.rotation) as GameObject;
 				bulletReference.transform.localScale = new Vector3(0.1f, 0.1f, 1.0f);
@@ -199,30 +199,30 @@ public class MovePlayer : MonoBehaviour
 		// Trigger input
 		float trigSclX = triggerLeftPrefab.transform.localScale.x;
 		float trigSclZ = triggerLeftPrefab.transform.localScale.z;
-		float leftTrigHeight = MAX_TRG_SCL * (1.0f - XCI.GetAxis(XboxAxis.LeftTrigger, controller));
-		float rightTrigHeight = MAX_TRG_SCL * (1.0f - XCI.GetAxis(XboxAxis.RightTrigger, controller));
+		float leftTrigHeight = MAX_TRG_SCL * (1.0f - XCI.GetAxis(XboxAxis.LeftTrigger, playerphys));
+		float rightTrigHeight = MAX_TRG_SCL * (1.0f - XCI.GetAxis(XboxAxis.RightTrigger, playerphys));
 		triggerLeftPrefab.transform.localScale = new Vector3(trigSclX, leftTrigHeight, trigSclZ);
 		triggerRightPrefab.transform.localScale = new Vector3(trigSclX, rightTrigHeight, trigSclZ);
 		
 		
 		// Bumper input
-		if(XCI.GetButtonDown(XboxButton.LeftBumper, controller))
+		if(XCI.GetButtonDown(XboxButton.LeftBumper, playerphys))
 		{
 			Instantiate(laserBumpPrefab, triggerLeftPrefab.transform.position, laserBumpPrefab.transform.rotation);
 		}
-		if(XCI.GetButtonDown(XboxButton.RightBumper, controller))
+		if(XCI.GetButtonDown(XboxButton.RightBumper, playerphys))
 		{
 			Instantiate(laserBumpPrefab, triggerRightPrefab.transform.position, laserBumpPrefab.transform.rotation);
 		}
 		
 		
 		// Start and back, same as bumpers but smaller bullets
-		if(XCI.GetButtonUp(XboxButton.Back, controller))
+		if(XCI.GetButtonUp(XboxButton.Back, playerphys))
 		{
 			bulletReference = Instantiate(laserBumpPrefab, triggerLeftPrefab.transform.position, laserBumpPrefab.transform.rotation) as GameObject;
 			bulletReference.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 		}
-		if(XCI.GetButtonUp(XboxButton.Start, controller))
+		if(XCI.GetButtonUp(XboxButton.Start, playerphys))
 		{
 			bulletReference = Instantiate(laserBumpPrefab, triggerRightPrefab.transform.position, laserBumpPrefab.transform.rotation) as GameObject;
 			bulletReference.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
@@ -259,12 +259,12 @@ public class MovePlayer : MonoBehaviour
 	// Gizmo Drawing
 	void OnDrawGizmos()
 	{
-		switch (controller)
+		switch (playerphys)
 		{
-			case XboxController.First:  Gizmos.color = Color.red; break;
-			case XboxController.Second: Gizmos.color = Color.green; break;
-			case XboxController.Third:  Gizmos.color = Color.blue; break;
-			case XboxController.Fourth: Gizmos.color = Color.yellow; break;
+			case Xboxplayerphys.First:  Gizmos.color = Color.red; break;
+			case Xboxplayerphys.Second: Gizmos.color = Color.green; break;
+			case Xboxplayerphys.Third:  Gizmos.color = Color.blue; break;
+			case Xboxplayerphys.Fourth: Gizmos.color = Color.yellow; break;
 			default:                    Gizmos.color = Color.white; break;
 		}
 		
