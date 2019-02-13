@@ -18,8 +18,7 @@ public class SpearThrowScript : MonoBehaviour
     {
         PlayerGameObj = GameObject.FindGameObjectWithTag("Player");
         PlayerScript = PlayerGameObj.GetComponent<PlayerController>();
-
-
+        
     }
 
     // Update is called once per frame

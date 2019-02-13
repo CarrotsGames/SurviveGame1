@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
+        Debug.Log(Velocity.y);
        Vector2 Input = new Vector2(XCI.GetAxis(XboxAxis.LeftStickX), (XCI.GetAxis(XboxAxis.LeftStickY)));
         int WallDirectionX = (playerphys.Collisions.Left) ? -1 : 1;
         float TargetVelocity = Input.x * MoveSpeed;
@@ -50,8 +51,7 @@ public class PlayerController : MonoBehaviour {
         }
         if (playerphys.Collisions.Above || playerphys.Collisions.Below)
         {
-            Debug.Log("FloorCollision");
-
+ 
             Velocity.y = 0;
         }
         if (XCI.GetButtonDown(XboxButton.A))
