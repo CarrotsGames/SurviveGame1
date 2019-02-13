@@ -29,8 +29,11 @@ public class PlayerController : MonoBehaviour {
     {
 
        Vector2 Input = new Vector2(XCI.GetAxis(XboxAxis.LeftStickX), (XCI.GetAxis(XboxAxis.LeftStickY)));
-      
-       if (XCI.GetButtonDown(XboxButton.A) && CanJump)
+        if (playerphys.Collisions.Above || playerphys.Collisions.Below)
+        {
+            Veloctiy.y = 0;
+        }
+        if (XCI.GetButtonDown(XboxButton.A) && CanJump)
        {
            Veloctiy.y = JumpVelocity;
            CanJump = false;
