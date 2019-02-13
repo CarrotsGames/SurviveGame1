@@ -7,7 +7,8 @@ public class PlayerPhysics : MonoBehaviour
     BoxCollider2D PlayerCollider;
 
     float MaxClimbAngle = 80;
- 
+    float MaxDescendAngle = 80;
+
     public float Skin = 0.015f;
     GameObject PlayerGameObj;
     PlayerController PlayerScript;
@@ -32,6 +33,11 @@ public class PlayerPhysics : MonoBehaviour
     {
         UpdateRaycastOrigins();
         Collisions.Reset();
+        if(velocity.y < 0)
+        {
+            DescenedSlope(ref velocity);
+        }
+
         if (velocity.x != 0)
         {
             HorizontalCollisions(ref velocity);
@@ -164,12 +170,44 @@ public class PlayerPhysics : MonoBehaviour
         }
     }
 
+    void DescenedSlope(ref Vector3 Velocity)
+    {
+        float DirectionX = Mathf.Sign(Velocity.x);
+                            // If directionX        Do this                 else do this
+        Vector2 RayOrigin = (DirectionX == -1) ? raycastOrigins.bottomRight : raycastOrigins.bottomLeft;
+        RaycastHit2D Hit = Physics2D.Raycast(RayOrigin, -Vector2.up, Mathf.Infinity, CollisionMask);
+
+        if(Hit)
+        {
+            float SlopeAngle = Vector2.Angle(Hit.normal, Vector2.up);
+            if(SlopeAngle != 0 && SlopeAngle <= MaxDescendAngle)
+            {
+                if(Mathf.Sign(Hit.normal.x) == DirectionX)
+                {
+                    if(Hit.distance - Skin <= Mathf.Tan(SlopeAngle * Mathf.Deg2Rad) * Mathf.Abs(Velocity.x))
+                    {
+                        float MoveDistance = Mathf.Abs(Velocity.x);
+                        float DescenedVelocityY = Mathf.Sin(SlopeAngle * Mathf.Deg2Rad) * MoveDistance;
+
+                        Velocity.x = Mathf.Cos(SlopeAngle * Mathf.Deg2Rad) * MoveDistance * Mathf.Sign(Velocity.x);
+                        Velocity.y -= DescenedVelocityY;
+
+                        Collisions.SlopeAngle = SlopeAngle;
+                        Collisions.DescendSlope = true;
+                        Collisions.Below = true;
+                    }
+                }
+            }
+        }
+    }
     public struct CollisionInfo
     {
         public bool Above, Below;
         public bool Left, Right;
 
         public bool ClimbingSlope;
+        public bool DescendSlope;
+
         public float SlopeAngle, SlopeAngleOld;
 
         public void Reset()
@@ -177,6 +215,7 @@ public class PlayerPhysics : MonoBehaviour
             Above = Below = false;
             Left = Right = false;
             ClimbingSlope = false;
+            DescendSlope = false;
             SlopeAngleOld = SlopeAngle;
             SlopeAngle = 0;
         }
