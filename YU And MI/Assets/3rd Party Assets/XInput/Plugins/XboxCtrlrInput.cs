@@ -8,9 +8,9 @@ namespace XboxCtrlrInput
 	// ================= Enumerations ==================== //
 	
 	/// <summary>
-	///     List of enumerated identifiers for Xbox controllers.
+	///     List of enumerated identifiers for Xbox playerphyss.
 	/// </summary>
-	public enum XboxController
+	public enum Xboxplayerphys
 	{
 		All = 0,
 		First = 1,
@@ -73,7 +73,7 @@ namespace XboxCtrlrInput
 		// >>> For Buttons <<< //
 		
 		/// <summary> 
-		/// 	Returns <c>true</c> if the specified button is held down by any controller. 
+		/// 	Returns <c>true</c> if the specified button is held down by any playerphys. 
 		/// </summary>
 		/// <param name='button'>
 		/// 	Identifier for the Xbox button to be tested. 
@@ -111,23 +111,23 @@ namespace XboxCtrlrInput
 		}
 		
 		/// <summary> 
-		/// 	Returns <c>true</c> if the specified button is held down by a specified controller. 
+		/// 	Returns <c>true</c> if the specified button is held down by a specified playerphys. 
 		/// </summary>
 		/// <param name='button'> 
 		/// 	Identifier for the Xbox button to be tested. 
 		/// </param>
-		/// <param name='controller'>
-		/// 	An identifier for the specific controller on which to test the button.
+		/// <param name='playerphys'>
+		/// 	An identifier for the specific playerphys on which to test the button.
 		/// </param>
-		public static bool GetButton(XboxButton button, XboxController controller)
+		public static bool GetButton(XboxButton button, Xboxplayerphys playerphys)
 		{
 			if (button.IsDPad())
-				return GetDPad(button.ToDPad(), controller);
+				return GetDPad(button.ToDPad(), playerphys);
 
-			if (controller == XboxController.All)
+			if (playerphys == Xboxplayerphys.All)
 				return GetButton(button);
 
-			int controllerNumber = (int)controller;
+			int playerphysNumber = (int)playerphys;
 			
 			if(OnWindowsNative())
 			{
@@ -136,7 +136,7 @@ namespace XboxCtrlrInput
 					XInputUpdateAllStates();
 				}
 				
-				GamePadState ctrlrState = XInputGetPaticularState(controllerNumber);
+				GamePadState ctrlrState = XInputGetPaticularState(playerphysNumber);
 				
 				if( XInputGetButtonState(ctrlrState.Buttons, button) == ButtonState.Pressed )
 				{
@@ -146,7 +146,7 @@ namespace XboxCtrlrInput
 			
 			else
 			{
-				string btnCode = DetermineButtonCode(button, controllerNumber);
+				string btnCode = DetermineButtonCode(button, playerphysNumber);
 				
 				if(Input.GetKey(btnCode))
 				{
@@ -158,7 +158,7 @@ namespace XboxCtrlrInput
 		}
 		
 		/// <summary> 
-		/// 	Returns <c>true</c> at the frame the specified button starts to press down (not held down) by any controller. 
+		/// 	Returns <c>true</c> at the frame the specified button starts to press down (not held down) by any playerphys. 
 		/// </summary>
 		/// <param name='button'> 
 		/// 	Identifier for the Xbox button to be tested. 
@@ -199,23 +199,23 @@ namespace XboxCtrlrInput
 		}
 		
 		/// <summary> 
-		/// 	Returns <c>true</c> at the frame the specified button starts to press down (not held down) by a specified controller. 
+		/// 	Returns <c>true</c> at the frame the specified button starts to press down (not held down) by a specified playerphys. 
 		/// </summary>
 		/// <param name='button'> 
 		/// 	Identifier for the Xbox button to be tested. 
 		/// </param>
-		/// <param name='controller'>
-		/// 	An identifier for the specific controller on which to test the button.
+		/// <param name='playerphys'>
+		/// 	An identifier for the specific playerphys on which to test the button.
 		/// </param>
-		public static bool GetButtonDown(XboxButton button, XboxController controller)
+		public static bool GetButtonDown(XboxButton button, Xboxplayerphys playerphys)
 		{
 			if (button.IsDPad())
-				return GetDPadDown(button.ToDPad(), controller);
+				return GetDPadDown(button.ToDPad(), playerphys);
 
-			if (controller == XboxController.All)
+			if (playerphys == Xboxplayerphys.All)
 				return GetButtonDown(button);
 
-			int controllerNumber = (int)controller;
+			int playerphysNumber = (int)playerphys;
 
 			if(OnWindowsNative())
 			{
@@ -224,8 +224,8 @@ namespace XboxCtrlrInput
 					XInputUpdateAllStates();
 				}
 				
-				GamePadState ctrlrState = XInputGetPaticularState(controllerNumber);
-				GamePadState ctrlrStatePrev = XInputGetPaticularStatePrev(controllerNumber);
+				GamePadState ctrlrState = XInputGetPaticularState(playerphysNumber);
+				GamePadState ctrlrStatePrev = XInputGetPaticularStatePrev(playerphysNumber);
 				
 				if( ( XInputGetButtonState(ctrlrState.Buttons, button) == ButtonState.Pressed ) &&
 					( XInputGetButtonState(ctrlrStatePrev.Buttons, button) == ButtonState.Released ) )
@@ -236,7 +236,7 @@ namespace XboxCtrlrInput
 			
 			else
 			{
-				string btnCode = DetermineButtonCode(button, controllerNumber);
+				string btnCode = DetermineButtonCode(button, playerphysNumber);
 				
 				if(Input.GetKeyDown(btnCode))
 				{
@@ -248,7 +248,7 @@ namespace XboxCtrlrInput
 		}
 		
 		/// <summary> 
-		/// 	Returns <c>true</c> at the frame the specified button is released by any controller. 
+		/// 	Returns <c>true</c> at the frame the specified button is released by any playerphys. 
 		/// </summary>
 		/// <param name='button'> 
 		/// 	Identifier for the Xbox button to be tested. 
@@ -294,23 +294,23 @@ namespace XboxCtrlrInput
 		}
 		
 		/// <summary> 
-		/// 	Returns <c>true</c> at the frame the specified button is released by a specified controller. 
+		/// 	Returns <c>true</c> at the frame the specified button is released by a specified playerphys. 
 		/// </summary>
 		/// <param name='button'> 
 		/// 	Identifier for the Xbox button to be tested. 
 		/// </param>
-		/// <param name='controller'>
-		/// 	An identifier for the specific controller on which to test the button.
+		/// <param name='playerphys'>
+		/// 	An identifier for the specific playerphys on which to test the button.
 		/// </param>
-		public static bool GetButtonUp(XboxButton button, XboxController controller)
+		public static bool GetButtonUp(XboxButton button, Xboxplayerphys playerphys)
 		{
 			if (button.IsDPad())
-				return GetDPadUp(button.ToDPad(), controller);
+				return GetDPadUp(button.ToDPad(), playerphys);
 
-			if (controller == XboxController.All)
+			if (playerphys == Xboxplayerphys.All)
 				return GetButtonUp(button);
 
-			int controllerNumber = (int)controller;
+			int playerphysNumber = (int)playerphys;
 
 			if(OnWindowsNative())
 			{
@@ -324,8 +324,8 @@ namespace XboxCtrlrInput
 					XInputUpdateAllStates();
 				}
 				
-				GamePadState ctrlrState = XInputGetPaticularState(controllerNumber);
-				GamePadState ctrlrStatePrev = XInputGetPaticularStatePrev(controllerNumber);
+				GamePadState ctrlrState = XInputGetPaticularState(playerphysNumber);
+				GamePadState ctrlrStatePrev = XInputGetPaticularStatePrev(playerphysNumber);
 				
 				if( ( XInputGetButtonState(ctrlrState.Buttons, button) == ButtonState.Released ) &&
 				    ( XInputGetButtonState(ctrlrStatePrev.Buttons, button) == ButtonState.Pressed ) )
@@ -336,7 +336,7 @@ namespace XboxCtrlrInput
 			
 			else
 			{
-				string btnCode = DetermineButtonCode(button, controllerNumber);
+				string btnCode = DetermineButtonCode(button, playerphysNumber);
 				
 				if(Input.GetKeyUp(btnCode))
 				{
@@ -350,7 +350,7 @@ namespace XboxCtrlrInput
 		// >>> For D-Pad <<< //
 		
 		/// <summary> 
-		/// 	Returns <c>true</c> if the specified D-Pad direction is pressed down by any controller. 
+		/// 	Returns <c>true</c> if the specified D-Pad direction is pressed down by any playerphys. 
 		/// </summary>
 		/// <param name='padDirection'> 
 		/// 	An identifier for the specified D-Pad direction to be tested. 
@@ -383,12 +383,12 @@ namespace XboxCtrlrInput
 					inputCode = DetermineDPadMac(padDirection, 0);
 					r = Input.GetKey(inputCode);
 				}
-				else if(OnLinux() && IsControllerWireless())
+				else if(OnLinux() && IsplayerphysWireless())
 				{
 					inputCode = DetermineDPadWirelessLinux(padDirection, 0);
 					r = Input.GetKey(inputCode);
 				}
-				else // Windows Web Player and Linux Wired Controller
+				else // Windows Web Player and Linux Wired playerphys
 				{
 					inputCode = DetermineDPad(padDirection, 0);
 					
@@ -408,20 +408,20 @@ namespace XboxCtrlrInput
 		}
 		
 		/// <summary> 
-		/// 	Returns <c>true</c> if the specified D-Pad direction is pressed down by a specified controller. 
+		/// 	Returns <c>true</c> if the specified D-Pad direction is pressed down by a specified playerphys. 
 		/// </summary>
 		/// <param name='padDirection'> 
 		/// 	An identifier for the specified D-Pad direction to be tested. 
 		/// </param>
-		/// <param name='controller'>
-		/// 	An identifier for the specific controller on which to test the D-Pad.
+		/// <param name='playerphys'>
+		/// 	An identifier for the specific playerphys on which to test the D-Pad.
 		/// </param>
-		public static bool GetDPad(XboxDPad padDirection, XboxController controller)
+		public static bool GetDPad(XboxDPad padDirection, Xboxplayerphys playerphys)
 		{
-			if (controller == XboxController.All)
+			if (playerphys == Xboxplayerphys.All)
 				return GetDPad(padDirection);
 
-			int controllerNumber = (int)controller;
+			int playerphysNumber = (int)playerphys;
 
 			bool r = false;
 			
@@ -432,7 +432,7 @@ namespace XboxCtrlrInput
 					XInputUpdateAllStates();
 				}
 				
-				GamePadState ctrlrState = XInputGetPaticularState(controllerNumber);
+				GamePadState ctrlrState = XInputGetPaticularState(playerphysNumber);
 
 				if( XInputGetDPadState(ctrlrState.DPad, padDirection) == ButtonState.Pressed )
 				{
@@ -446,17 +446,17 @@ namespace XboxCtrlrInput
 				
 				if(OnMac())
 				{
-					inputCode = DetermineDPadMac(padDirection, controllerNumber);
+					inputCode = DetermineDPadMac(padDirection, playerphysNumber);
 					r = Input.GetKey(inputCode);
 				}
-				else if(OnLinux() && IsControllerWireless(controllerNumber))
+				else if(OnLinux() && IsplayerphysWireless(playerphysNumber))
 				{
-					inputCode = DetermineDPadWirelessLinux(padDirection, controllerNumber);
+					inputCode = DetermineDPadWirelessLinux(padDirection, playerphysNumber);
 					r = Input.GetKey(inputCode);
 				}
-				else // Windows Web Player and Linux Wired Controller
+				else // Windows Web Player and Linux Wired playerphys
 				{
-					inputCode = DetermineDPad(padDirection, controllerNumber);
+					inputCode = DetermineDPad(padDirection, playerphysNumber);
 					
 					switch(padDirection)
 					{
@@ -476,7 +476,7 @@ namespace XboxCtrlrInput
 		// From @ProjectEnder
 		/// <summary> 
 		/// 	Returns <c>true</c> at the frame the specified button is released.
-		/// 	Does NOT work on Linux with Wired Controllers.
+		/// 	Does NOT work on Linux with Wired playerphyss.
 		/// </summary>
 		/// <param name='button'> 
 		/// 	Identifier for the Xbox button to be tested. 
@@ -517,7 +517,7 @@ namespace XboxCtrlrInput
 					inputCode = DetermineDPadMac(padDirection, 0);
 					r = Input.GetKeyUp(inputCode);
 				}
-				else if(OnLinux() && IsControllerWireless())
+				else if(OnLinux() && IsplayerphysWireless())
 				{
 					inputCode = DetermineDPadWirelessLinux(padDirection, 0);
 					r = Input.GetKeyUp(inputCode);
@@ -534,21 +534,21 @@ namespace XboxCtrlrInput
 
 		// From @ProjectEnder
 		/// <summary> 
-		/// 	Returns <c>true</c> at the frame the specified button is released by a specified controller.
-		/// 	Does NOT work on Linux with Wired Controllers.
+		/// 	Returns <c>true</c> at the frame the specified button is released by a specified playerphys.
+		/// 	Does NOT work on Linux with Wired playerphyss.
 		/// </summary>
 		/// <param name='button'> 
 		/// 	Identifier for the Xbox button to be tested. 
 		/// </param>
-		/// <param name='controller'>
-		/// 	An identifier for the specific controller on which to test the button.
+		/// <param name='playerphys'>
+		/// 	An identifier for the specific playerphys on which to test the button.
 		/// </param>
-		public static bool GetDPadUp(XboxDPad padDirection, XboxController controller)
+		public static bool GetDPadUp(XboxDPad padDirection, Xboxplayerphys playerphys)
 		{
-			if (controller == XboxController.All)
+			if (playerphys == Xboxplayerphys.All)
 				return GetDPadUp(padDirection);
 
-			int controllerNumber = (int)controller;
+			int playerphysNumber = (int)playerphys;
 
 			bool r = false;
 			
@@ -564,8 +564,8 @@ namespace XboxCtrlrInput
 					XInputUpdateAllStates();
 				}
 				
-				GamePadState ctrlrState = XInputGetPaticularState(controllerNumber);
-				GamePadState ctrlrStatePrev = XInputGetPaticularStatePrev(controllerNumber);
+				GamePadState ctrlrState = XInputGetPaticularState(playerphysNumber);
+				GamePadState ctrlrStatePrev = XInputGetPaticularStatePrev(playerphysNumber);
 				
 				if( ( XInputGetDPadState(ctrlrState.DPad, padDirection) == ButtonState.Released ) &&
 				   ( XInputGetDPadState(ctrlrStatePrev.DPad, padDirection) == ButtonState.Pressed ) )
@@ -580,12 +580,12 @@ namespace XboxCtrlrInput
 				
 				if(OnMac())
 				{
-					inputCode = DetermineDPadMac(padDirection, controllerNumber);
+					inputCode = DetermineDPadMac(padDirection, playerphysNumber);
 					r = Input.GetKeyUp(inputCode);
 				}
-				else if(OnLinux() && IsControllerWireless(controllerNumber))
+				else if(OnLinux() && IsplayerphysWireless(playerphysNumber))
 				{
-					inputCode = DetermineDPadWirelessLinux(padDirection, controllerNumber);
+					inputCode = DetermineDPadWirelessLinux(padDirection, playerphysNumber);
 					r = Input.GetKeyUp(inputCode);
 				}
 				else
@@ -601,7 +601,7 @@ namespace XboxCtrlrInput
 		// From @ProjectEnder
 		/// <summary> 
 		/// 	Returns <c>true</c> at the frame the specified button is Pressed.
-		/// 	Does NOT work on Linux with Wired Controllers.
+		/// 	Does NOT work on Linux with Wired playerphyss.
 		/// </summary>
 		/// <param name='button'> 
 		/// 	Identifier for the Xbox button to be tested. 
@@ -642,7 +642,7 @@ namespace XboxCtrlrInput
 					inputCode = DetermineDPadMac(padDirection, 0);
 					r = Input.GetKeyDown(inputCode);
 				}
-				else if(OnLinux() && IsControllerWireless())
+				else if(OnLinux() && IsplayerphysWireless())
 				{
 					inputCode = DetermineDPadWirelessLinux(padDirection, 0);
 					r = Input.GetKeyDown(inputCode);
@@ -659,21 +659,21 @@ namespace XboxCtrlrInput
 
 		// From @ProjectEnder
 		/// <summary> 
-		/// 	Returns <c>true</c> at the frame the specified button is Pressed by a specified controller. 
-		/// 	Does NOT work on Linux with Wired Controllers.
+		/// 	Returns <c>true</c> at the frame the specified button is Pressed by a specified playerphys. 
+		/// 	Does NOT work on Linux with Wired playerphyss.
 		/// </summary>
 		/// <param name='button'> 
 		/// 	Identifier for the Xbox button to be tested. 
 		/// </param>
-		/// <param name='controller'>
-		/// 	An identifier for the specific controller on which to test the button.
+		/// <param name='playerphys'>
+		/// 	An identifier for the specific playerphys on which to test the button.
 		/// </param>
-		public static bool GetDPadDown(XboxDPad padDirection, XboxController controller)
+		public static bool GetDPadDown(XboxDPad padDirection, Xboxplayerphys playerphys)
 		{
-			if (controller == XboxController.All)
+			if (playerphys == Xboxplayerphys.All)
 				return GetDPadDown(padDirection);
 
-			int controllerNumber = (int)controller;
+			int playerphysNumber = (int)playerphys;
 
 			bool r = false;
 			
@@ -689,8 +689,8 @@ namespace XboxCtrlrInput
 					XInputUpdateAllStates();
 				}
 				
-				GamePadState ctrlrState = XInputGetPaticularState(controllerNumber);
-				GamePadState ctrlrStatePrev = XInputGetPaticularStatePrev(controllerNumber);
+				GamePadState ctrlrState = XInputGetPaticularState(playerphysNumber);
+				GamePadState ctrlrStatePrev = XInputGetPaticularStatePrev(playerphysNumber);
 				
 				if( ( XInputGetDPadState(ctrlrState.DPad, padDirection) == ButtonState.Pressed ) &&
 				   ( XInputGetDPadState(ctrlrStatePrev.DPad, padDirection) == ButtonState.Released ) )
@@ -705,12 +705,12 @@ namespace XboxCtrlrInput
 				
 				if(OnMac())
 				{
-					inputCode = DetermineDPadMac(padDirection, controllerNumber);
+					inputCode = DetermineDPadMac(padDirection, playerphysNumber);
 					r = Input.GetKeyDown(inputCode);
 				}
-				else if(OnLinux() && IsControllerWireless(controllerNumber))
+				else if(OnLinux() && IsplayerphysWireless(playerphysNumber))
 				{
-					inputCode = DetermineDPadWirelessLinux(padDirection, controllerNumber);
+					inputCode = DetermineDPadWirelessLinux(padDirection, playerphysNumber);
 					r = Input.GetKeyDown(inputCode);
 				}
 				else
@@ -726,7 +726,7 @@ namespace XboxCtrlrInput
 		// >>> For Axis <<< //
 		
 		/// <summary> 
-		/// 	Returns the analog number of the specified axis from any controller. 
+		/// 	Returns the analog number of the specified axis from any playerphys. 
 		/// </summary>
 		/// <param name='axis'> 
 		/// 	An identifier for the specified Xbox axis to be tested. 
@@ -753,7 +753,7 @@ namespace XboxCtrlrInput
 					r = XInputGetAxisState(ctrlrState.ThumbSticks, axis);
 				}
 
-				r = XInputApplyDeadzone(r, axis, XboxController.All);
+				r = XInputApplyDeadzone(r, axis, Xboxplayerphys.All);
 			}
 			else
 			{
@@ -767,20 +767,20 @@ namespace XboxCtrlrInput
 		}
 		
 		/// <summary> 
-		/// 	Returns the float number of the specified axis from a specified controller. 
+		/// 	Returns the float number of the specified axis from a specified playerphys. 
 		/// </summary>
 		/// <param name='axis'> 
 		/// 	An identifier for the specified Xbox axis to be tested. 
 		/// </param>
-		/// <param name='controller'>
-		/// 	An identifier for the specific controller on which to test the axis.
+		/// <param name='playerphys'>
+		/// 	An identifier for the specific playerphys on which to test the axis.
 		/// </param>
-		public static float GetAxis(XboxAxis axis, XboxController controller)
+		public static float GetAxis(XboxAxis axis, Xboxplayerphys playerphys)
 		{
-			if (controller == XboxController.All)
+			if (playerphys == Xboxplayerphys.All)
 				return GetAxis(axis);
 
-			int controllerNumber = (int)controller;
+			int playerphysNumber = (int)playerphys;
 
 			float r = 0.0f;
 			
@@ -791,7 +791,7 @@ namespace XboxCtrlrInput
 					XInputUpdateAllStates();
 				}
 				
-				GamePadState ctrlrState = XInputGetPaticularState(controllerNumber);
+				GamePadState ctrlrState = XInputGetPaticularState(playerphysNumber);
 				
 				if(axis == XboxAxis.LeftTrigger || axis == XboxAxis.RightTrigger)
 				{
@@ -802,21 +802,21 @@ namespace XboxCtrlrInput
 					r = XInputGetAxisState(ctrlrState.ThumbSticks, axis);
 				}
 
-				r = XInputApplyDeadzone(r, axis, controller);
+				r = XInputApplyDeadzone(r, axis, playerphys);
 			}
 			else
 			{
-				string axisCode = DetermineAxisCode(axis, controllerNumber);
+				string axisCode = DetermineAxisCode(axis, playerphysNumber);
 				
 				r = Input.GetAxis(axisCode);
-				r = AdjustAxisValues(r, axis, controllerNumber);
+				r = AdjustAxisValues(r, axis, playerphysNumber);
 			}
 			
 			return r;
 		}
 		
 		/// <summary> 
-		/// 	Returns the float number of the specified axis from any controller without Unity's smoothing filter. 
+		/// 	Returns the float number of the specified axis from any playerphys without Unity's smoothing filter. 
 		/// </summary>
 		/// <param name='axis'> 
 		/// 	An identifier for the specified Xbox axis to be tested. 
@@ -856,20 +856,20 @@ namespace XboxCtrlrInput
 		}
 		
 		/// <summary> 
-		/// 	Returns the float number of the specified axis from a specified controller without Unity's smoothing filter. 
+		/// 	Returns the float number of the specified axis from a specified playerphys without Unity's smoothing filter. 
 		/// </summary>
 		/// <param name='axis'> 
 		/// 	An identifier for the specified Xbox axis to be tested. 
 		/// </param>
-		/// <param name='controller'>
-		/// 	An identifier for the specific controller on which to test the axis.
+		/// <param name='playerphys'>
+		/// 	An identifier for the specific playerphys on which to test the axis.
 		/// </param>
-		public static float GetAxisRaw(XboxAxis axis, XboxController controller)
+		public static float GetAxisRaw(XboxAxis axis, Xboxplayerphys playerphys)
 		{
-			if (controller == XboxController.All)
+			if (playerphys == Xboxplayerphys.All)
 				return GetAxisRaw(axis);
 
-			int controllerNumber = (int)controller;
+			int playerphysNumber = (int)playerphys;
 
 			float r = 0.0f;
 			
@@ -880,7 +880,7 @@ namespace XboxCtrlrInput
 					XInputUpdateAllStates();
 				}
 					
-				GamePadState ctrlrState = XInputGetPaticularState(controllerNumber);
+				GamePadState ctrlrState = XInputGetPaticularState(playerphysNumber);
 				
 				if(axis == XboxAxis.LeftTrigger || axis == XboxAxis.RightTrigger)
 				{
@@ -894,10 +894,10 @@ namespace XboxCtrlrInput
 			
 			else
 			{
-				string axisCode = DetermineAxisCode(axis, controllerNumber);
+				string axisCode = DetermineAxisCode(axis, playerphysNumber);
 				
 				r = Input.GetAxisRaw(axisCode);
-				r = AdjustAxisValues(r, axis, controllerNumber);
+				r = AdjustAxisValues(r, axis, playerphysNumber);
 			}
 				
 			return r;
@@ -906,7 +906,7 @@ namespace XboxCtrlrInput
 		// >>> Other important functions <<< //
 		
 		/// <summary> 
-		/// 	Returns the number of Xbox controllers plugged to the computer. 
+		/// 	Returns the number of Xbox playerphyss plugged to the computer. 
 		/// </summary>
 		public static int GetNumPluggedCtrlrs()
 		{
@@ -945,9 +945,9 @@ namespace XboxCtrlrInput
 		}
 		
 		/// <summary> 
-		/// 	DEBUG function. Log all controller names to Unity's console. 
+		/// 	DEBUG function. Log all playerphys names to Unity's console. 
 		/// </summary>
-		public static void DEBUG_LogControllerNames()
+		public static void DEBUG_LogplayerphysNames()
 		{
 			string[] cNames = Input.GetJoystickNames();
 			
@@ -959,13 +959,13 @@ namespace XboxCtrlrInput
 
 		// From @xoorath
 		/// <summary>
-		/// 	Determines if the controller is plugged in the specified controllerNumber.
+		/// 	Determines if the playerphys is plugged in the specified playerphysNumber.
 		/// 	CAUTION: Only works on Windows Native (Desktop and Editor, not Web)!
 		/// </summary>
-		/// <param name="controllerNumber">
-		/// 	An identifier for the specific controller on which to test the axis. An int between 1 and 4.
+		/// <param name="playerphysNumber">
+		/// 	An identifier for the specific playerphys on which to test the axis. An int between 1 and 4.
 		/// </param>
-		public static bool IsPluggedIn(int controllerNumber)
+		public static bool IsPluggedIn(int playerphysNumber)
 		{
 			if(OnWindowsNative())
 			{
@@ -974,7 +974,7 @@ namespace XboxCtrlrInput
 					XInputUpdateAllStates();
 				}
 				
-				GamePadState ctrlrState = XInputGetPaticularState(controllerNumber);
+				GamePadState ctrlrState = XInputGetPaticularState(playerphysNumber);
 				
 				return ctrlrState.IsConnected;
 			}
@@ -1003,9 +1003,9 @@ namespace XboxCtrlrInput
 
 		private static bool OnMac()
 		{
-			// All Mac mappings are based off TattieBogle Xbox Controller drivers
-			// http://tattiebogle.net/index.php/ProjectRoot/Xbox360Controller/OsxDriver
-			// http://wiki.unity3d.com/index.php?title=Xbox360Controller
+			// All Mac mappings are based off TattieBogle Xbox playerphys drivers
+			// http://tattiebogle.net/index.php/ProjectRoot/Xbox360playerphys/OsxDriver
+			// http://wiki.unity3d.com/index.php?title=Xbox360playerphys
 			return (Application.platform == RuntimePlatform.OSXEditor || 
 				    Application.platform == RuntimePlatform.OSXPlayer   );
 		}
@@ -1028,17 +1028,17 @@ namespace XboxCtrlrInput
 			return Application.platform == RuntimePlatform.LinuxPlayer;
 		}
 		
-		private static bool IsControllerWireless()
+		private static bool IsplayerphysWireless()
 		{
-			// 0 means for any controller
-			return IsControllerWireless(0);
+			// 0 means for any playerphys
+			return IsplayerphysWireless(0);
 		}
 		
-		private static bool IsControllerWireless(int ctrlNum)
+		private static bool IsplayerphysWireless(int ctrlNum)
 		{	
 			if (ctrlNum < 0 || ctrlNum > 4) return false;
 			
-			// If 0 is passed in, that assumes that only 1 controller is plugged in.
+			// If 0 is passed in, that assumes that only 1 playerphys is plugged in.
 			if(ctrlNum == 0)
 			{
 				return ( (string) Input.GetJoystickNames()[0]).Contains("Wireless");
@@ -1047,7 +1047,7 @@ namespace XboxCtrlrInput
 			return ( (string) Input.GetJoystickNames()[ctrlNum-1]).Contains("Wireless");
 		}
 		
-		private static bool IsControllerNumberValid(int ctrlrNum)
+		private static bool IsplayerphysNumberValid(int ctrlrNum)
 		{
 			if(ctrlrNum > 0 && ctrlrNum <= 4)
 			{
@@ -1055,7 +1055,7 @@ namespace XboxCtrlrInput
 			}
 			else
 			{
-				Debug.LogError("XCI.IsControllerNumberValid(): " + 
+				Debug.LogError("XCI.IsplayerphysNumberValid(): " + 
 							   "Invalid contoller number! Should be between 1 and 4.");
 			}
 			return false;
@@ -1560,7 +1560,7 @@ namespace XboxCtrlrInput
 		
 		private static GamePadState XInputGetPaticularState(int ctrlNum)
 		{
-			if (!IsControllerNumberValid(ctrlNum)) return xInputCtrlrs[0];
+			if (!IsplayerphysNumberValid(ctrlNum)) return xInputCtrlrs[0];
 			
 			return xInputCtrlrs[ctrlNum-1];
 		}
@@ -1572,7 +1572,7 @@ namespace XboxCtrlrInput
 		
 		private static GamePadState XInputGetPaticularStatePrev(int ctrlNum)
 		{
-			if (!IsControllerNumberValid(ctrlNum)) return xInputCtrlrsPrev[0];
+			if (!IsplayerphysNumberValid(ctrlNum)) return xInputCtrlrsPrev[0];
 			
 			return xInputCtrlrsPrev[ctrlNum-1];
 		}
@@ -1668,7 +1668,7 @@ namespace XboxCtrlrInput
 			return r;
 		}
 
-		private static float XInputApplyDeadzone(float rawAxisValue, XboxAxis axis, XboxController controller)
+		private static float XInputApplyDeadzone(float rawAxisValue, XboxAxis axis, Xboxplayerphys playerphys)
 		{
 			float finalValue = rawAxisValue;
 			float deadzone = 0.0f;
@@ -1677,22 +1677,22 @@ namespace XboxCtrlrInput
 			switch(axis)
 			{
 			case XboxAxis.LeftStickX:
-				deadzone = XciHandler.Instance.Deadzones.LeftStickX[(int) controller];
+				deadzone = XciHandler.Instance.Deadzones.LeftStickX[(int) playerphys];
 				break;
 			case XboxAxis.LeftStickY:
-				deadzone = XciHandler.Instance.Deadzones.LeftStickY[(int) controller];
+				deadzone = XciHandler.Instance.Deadzones.LeftStickY[(int) playerphys];
 				break;
 			case XboxAxis.RightStickX:
-				deadzone = XciHandler.Instance.Deadzones.RightStickX[(int) controller];
+				deadzone = XciHandler.Instance.Deadzones.RightStickX[(int) playerphys];
 				break;
 			case XboxAxis.RightStickY:
-				deadzone = XciHandler.Instance.Deadzones.RightStickY[(int) controller];
+				deadzone = XciHandler.Instance.Deadzones.RightStickY[(int) playerphys];
 				break;
 			case XboxAxis.LeftTrigger:
-				deadzone = XciHandler.Instance.Deadzones.LeftTrigger[(int) controller];
+				deadzone = XciHandler.Instance.Deadzones.LeftTrigger[(int) playerphys];
 				break;
 			case XboxAxis.RightTrigger:
-				deadzone = XciHandler.Instance.Deadzones.RightTrigger[(int) controller];
+				deadzone = XciHandler.Instance.Deadzones.RightTrigger[(int) playerphys];
 				break;
 			}
 

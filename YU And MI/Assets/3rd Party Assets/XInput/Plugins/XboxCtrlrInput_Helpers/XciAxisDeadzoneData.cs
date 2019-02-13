@@ -3,7 +3,7 @@
 namespace XboxCtrlrInput
 {
 	/// <summary>
-	/// 	Contains deadzone data of every axis for every joystick number (see XboxController enum).
+	/// 	Contains deadzone data of every axis for every joystick number (see Xboxplayerphys enum).
 	/// 	Mostly for use with XInput (Windows API)
 	/// </summary>
 	public class XciAxisDeadzoneData
