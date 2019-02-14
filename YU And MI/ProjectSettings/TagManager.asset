@@ -10,6 +10,7 @@ TagManager:
   - EndLevel
   - BLOCK
   - DSplitManager
+  - CamPath
   layers:
   - Default
   - TransparentFX
