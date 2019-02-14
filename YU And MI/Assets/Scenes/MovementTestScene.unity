@@ -316,7 +316,13 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114605003022637958, guid: b82d6e41f1ed7f249ab274251562d046,
+        type: 2}
+      propertyPath: TimeToApex
+      value: 0.3
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114605003022637958, guid: b82d6e41f1ed7f249ab274251562d046, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: b82d6e41f1ed7f249ab274251562d046, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &534669902
@@ -533,9 +539,52 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114845814168297784, guid: b597c8aeced5d6244aaa733c45935016,
+        type: 2}
+      propertyPath: TimeToApex
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114845814168297784, guid: b597c8aeced5d6244aaa733c45935016,
+        type: 2}
+      propertyPath: AccelerationTimeGrounded
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114845814168297784, guid: b597c8aeced5d6244aaa733c45935016,
+        type: 2}
+      propertyPath: AccelerationTimeAirBourne
+      value: 0.15
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114845814168297784, guid: b597c8aeced5d6244aaa733c45935016, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: b597c8aeced5d6244aaa733c45935016, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1184041803 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1490526772298712, guid: b82d6e41f1ed7f249ab274251562d046,
+    type: 2}
+  m_PrefabInternal: {fileID: 349217671}
+--- !u!114 &1184041806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1184041803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b15110bb81db76498546363db45a05e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JumpHeight: 2
+  TimeToApex: 0.3
+  AccelerationTimeAirBourne: 0.05
+  AccelerationTimeGrounded: 0.05
+  MoveSpeed: 4
+  WallJump: {x: 22, y: 12}
+  WallSlideSpeedMax: 0
+  TimeTillGlide: 0
+  Gravity: 0
+  JumpVelocity: 0
+  CanJump: 0
 --- !u!1 &1261835765
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,3 +927,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!1 &1844833769 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1053418880186406, guid: b597c8aeced5d6244aaa733c45935016,
+    type: 2}
+  m_PrefabInternal: {fileID: 952698447}
+--- !u!114 &1844833773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1844833769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b15110bb81db76498546363db45a05e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JumpHeight: 4
+  TimeToApex: 0.3
+  AccelerationTimeAirBourne: 0.05
+  AccelerationTimeGrounded: 0.05
+  MoveSpeed: 6
+  WallJump: {x: 0, y: 0}
+  WallSlideSpeedMax: 3
+  TimeTillGlide: 0.25
+  Gravity: 0
+  JumpVelocity: 0
+  CanJump: 0
