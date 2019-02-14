@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     public float AccelerationTimeAirBourne = .2f;
     public float AccelerationTimeGrounded = .1f;
     public float MoveSpeed = 6;
+    public bool GLIDING = false;
 
     // public Vector2 WallJumpClimb;
     // public Vector2 WallJumpOff;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour {
     public float Gravity;
     public float JumpVelocity;
     public bool CanJump;
+    bool CanGlide;
     Vector3 Velocity;
     PlayerPhysics playerphys;
     private void Start()
@@ -77,33 +79,36 @@ public class PlayerController : MonoBehaviour {
                 Velocity.y = WallJump.y;
             }
         }
-        if (XCI.GetButtonDown(XboxButton.A))
+        if (XCI.GetButton(XboxButton.A))
         {
-
-            //  if (IsWallSliding)
-            //  {
-            //      if(WallDirectionX == Input.x)
-            //      {
-            //          Velocity.x = -WallDirectionX * WallJumpClimb.x;
-            //          Velocity.y = WallJumpClimb.y;
-            //      }
-            //      else if(Input.x == 0)
-            //      {
-            //          Velocity.x = -WallDirectionX * WallJumpOff.x;
-            //          Velocity.y = WallJumpOff.y;
-            //      }
-            //      else
-            //      {
-            //          Velocity.x = -WallDirectionX * WallLeap.x;
-            //          Velocity.y = WallLeap.y;
-            //      }
-            //  }
+      
             if (playerphys.Collisions.Above)
             {
                 Velocity.y = JumpVelocity;
             }
         }
+        if (tag == "Player2")
+        {
+            if (XCI.GetButtonDown(XboxButton.A) && !CanGlide)
+            {
+                CanGlide = true;
+            }
+            if(CanGlide && XCI.GetButtonDown(XboxButton.A))
+            {
 
+                if(XCI.GetButtonUp(XboxButton.A))
+                GLIDING = true;
+            }
+            if (XCI.GetButtonDown(XboxButton.A) && GLIDING)
+            {
+                Debug.Log("Glide");
+            }
+        }
+         
+        if (tag == "Player")
+        {
+            CanGlide = false;
+        }
 
         Velocity.y += Gravity * Time.deltaTime;
         playerphys.Move(Velocity * Time.deltaTime);
