@@ -12,9 +12,10 @@ public class PlayerController : MonoBehaviour {
     public float AccelerationTimeGrounded = .1f;
     public float MoveSpeed = 6;
 
-    public Vector2 WallJumpClimb;
-    public Vector2 WallJumpOff;
-    public Vector2 WallLeap;
+    // public Vector2 WallJumpClimb;
+    // public Vector2 WallJumpOff;
+    // public Vector2 WallLeap;
+    public Vector2 WallJump;
 
     public float WallSlideSpeedMax;
 
@@ -34,56 +35,79 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
-        Debug.Log(Velocity.y);
-       Vector2 Input = new Vector2(XCI.GetAxis(XboxAxis.LeftStickX), (XCI.GetAxis(XboxAxis.LeftStickY)));
+
+        Vector2 Input = new Vector2(XCI.GetAxis(XboxAxis.LeftStickX), (XCI.GetAxis(XboxAxis.LeftStickY)));
         int WallDirectionX = (playerphys.Collisions.Left) ? -1 : 1;
         float TargetVelocity = Input.x * MoveSpeed;
         Velocity.x = Mathf.SmoothDamp(Velocity.x, TargetVelocity, ref TargetVelocity, (playerphys.Collisions.Below) ? AccelerationTimeGrounded : AccelerationTimeAirBourne);
 
-        bool IsWallSliding = false;
-        if((playerphys.Collisions.Left || playerphys.Collisions.Right) && !playerphys.Collisions.Below && Velocity.y < 0)
-        {
-            IsWallSliding = true;
-             if(Velocity.y < -WallSlideSpeedMax)
-            {
-                Velocity.y = -WallSlideSpeedMax;
-            }
-        }
+        //  bool IsWallSliding = false;
+
+        //IsWallSliding = true;
+        // if(Velocity.y < -WallSlideSpeedMax)
+        //{
+        //    Velocity.y = -WallSlideSpeedMax;
+        //}
+
         if (playerphys.Collisions.Above || playerphys.Collisions.Below)
         {
- 
+
             Velocity.y = 0;
+        }
+        if ((playerphys.Collisions.Left) && !playerphys.Collisions.Below && Velocity.y < 0)
+        {
+            Debug.Log("LeftWall");
+            if (XCI.GetButtonDown(XboxButton.A))
+            {
+                Velocity.y = 0;
+                Velocity.x = WallJump.x;
+                Velocity.y = WallJump.y;
+            }
+
+        }
+        if (playerphys.Collisions.Right && !playerphys.Collisions.Below && Velocity.y < 0)
+        {
+            Debug.Log("RightWall");
+
+            if (XCI.GetButtonDown(XboxButton.A))
+            {
+                Velocity.y = 0;
+
+                Velocity.x = -WallJump.x;
+                Velocity.y = WallJump.y;
+            }
         }
         if (XCI.GetButtonDown(XboxButton.A))
         {
-            if (IsWallSliding)
-            {
-                if(WallDirectionX == Input.x)
-                {
-                    Velocity.x = -WallDirectionX * WallJumpClimb.x;
-                    Velocity.y = WallJumpClimb.y;
-                }
-                else if(Input.x == 0)
-                {
-                    Velocity.x = -WallDirectionX * WallJumpOff.x;
-                    Velocity.y = WallJumpOff.y;
-                }
-                else
-                {
-                    Velocity.x = -WallDirectionX * WallLeap.x;
-                    Velocity.y = WallLeap.y;
-                }
-            }
+
+            //  if (IsWallSliding)
+            //  {
+            //      if(WallDirectionX == Input.x)
+            //      {
+            //          Velocity.x = -WallDirectionX * WallJumpClimb.x;
+            //          Velocity.y = WallJumpClimb.y;
+            //      }
+            //      else if(Input.x == 0)
+            //      {
+            //          Velocity.x = -WallDirectionX * WallJumpOff.x;
+            //          Velocity.y = WallJumpOff.y;
+            //      }
+            //      else
+            //      {
+            //          Velocity.x = -WallDirectionX * WallLeap.x;
+            //          Velocity.y = WallLeap.y;
+            //      }
+            //  }
             if (playerphys.Collisions.Above)
             {
                 Velocity.y = JumpVelocity;
             }
         }
-      
+
 
         Velocity.y += Gravity * Time.deltaTime;
         playerphys.Move(Velocity * Time.deltaTime);
-     }
+    }
 
     private void OnCollisionEnter2D(Collision2D other)
     {

@@ -6,12 +6,16 @@ public class PlayerPhysics : MonoBehaviour
     public LayerMask CollisionMask;
     BoxCollider2D PlayerCollider;
 
-    float MaxClimbAngle = 80;
-    float MaxDescendAngle = 80;
+    public float MaxClimbAngle = 80;
+    public float MaxDescendAngle = 80;
 
     public float Skin = 0.015f;
     GameObject PlayerGameObj;
+    GameObject PlayerGameObj2;
+
     PlayerController PlayerScript;
+    PlayerController PlayerScript2;
+
     public int HorizontalRayCount = 4;
     public int VerticalRayCount = 4;
 
@@ -25,6 +29,8 @@ public class PlayerPhysics : MonoBehaviour
         PlayerCollider = GetComponent<BoxCollider2D>();
         PlayerGameObj = GameObject.FindGameObjectWithTag("Player");
         PlayerScript = PlayerGameObj.GetComponent<PlayerController>();
+        PlayerGameObj2 = GameObject.FindGameObjectWithTag("Player2");
+        PlayerScript2 = PlayerGameObj.GetComponent<PlayerController>();
         CalculateRaySpacing();
         Collisions.FaceDir = 1; 
     }
@@ -140,7 +146,23 @@ public class PlayerPhysics : MonoBehaviour
                 {
                     Velocity.x = Velocity.y / Mathf.Tan(Collisions.SlopeAngle * Mathf.Deg2Rad) * Mathf.Sign(Velocity.x);
                 }
-
+              // if (Collisions.SlopeAngle > 60 && Collisions.SlopeAngle < 180 || Collisions.SlopeAngle < 0 && Collisions.SlopeAngle < -180)
+              // {
+              //     if (tag == "Player")
+              //     {
+              //         PlayerScript.CanJump = false;
+              //     }
+              //     else if(tag == "Player2")
+              //     {
+              //         PlayerScript2.CanJump = false;
+              //
+              //     }
+              // }
+              // else
+              // {
+              //     PlayerScript.CanJump = true;
+              //
+              // }
                 Collisions.Above = directionY == -1;
                 Collisions.Below = directionY == 1;
             }
