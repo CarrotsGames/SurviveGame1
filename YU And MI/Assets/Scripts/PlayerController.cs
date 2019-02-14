@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour {
     public float AccelerationTimeAirBourne = .2f;
     public float AccelerationTimeGrounded = .1f;
     public float MoveSpeed = 6;
-
+ 
     // public Vector2 WallJumpClimb;
     // public Vector2 WallJumpOff;
     // public Vector2 WallLeap;
@@ -51,19 +51,11 @@ public class PlayerController : MonoBehaviour {
         float TargetVelocity = Input.x * MoveSpeed;
         Velocity.x = Mathf.SmoothDamp(Velocity.x, TargetVelocity, ref TargetVelocity, (playerphys.Collisions.Below) ? AccelerationTimeGrounded : AccelerationTimeAirBourne);
 
-        //  bool IsWallSliding = false;
-
-        //IsWallSliding = true;
-        // if(Velocity.y < -WallSlideSpeedMax)
-        //{
-        //    Velocity.y = -WallSlideSpeedMax;
-        //}
+ 
 
         if (playerphys.Collisions.Above || playerphys.Collisions.Below)
         {
-           // Gliding = 0;
-           // Gravity = grav;
-           // TimeToApex = Apex;
+     
             Velocity.y = 0;
         }
         if ((playerphys.Collisions.Left) && !playerphys.Collisions.Below && Velocity.y < 0)
@@ -124,35 +116,7 @@ public class PlayerController : MonoBehaviour {
 
             }
 
-            //  if(XCI.GetButtonDown(XboxButton.A) && Gliding <= 1)
-            //  {
-            //      Gliding++;
-            //  }
-            //  switch (Gliding)
-            //  {
-            //
-            //      case 2:
-            //          if (XCI.GetButtonDown(XboxButton.A))
-            //          {
-            //              TimeToApex = 2;
-            //              Gravity = -(2 * JumpHeight) / Mathf.Pow(TimeToApex, 2);
-            //              Debug.Log("Gliding");
-            //          }
-            //          if (XCI.GetButtonUp(XboxButton.A))
-            //          {
-            //              TimeToApex = Apex;
-            //              Gravity = -(2 * JumpHeight) / Mathf.Pow(TimeToApex, 2);
-            //          }
-            //          else  if (playerphys.Collisions.Above || playerphys.Collisions.Below)
-            //          {
-            //              TimeToApex = Apex;
-            //              Debug.Log("Grounded");
-            //              Velocity.y = 0;
-            //          }
-            //          break;
-            //
-            //  }
-
+          
 
         }
 
@@ -169,4 +133,5 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Hithead");
         }
     }
+ 
 }

@@ -21,9 +21,10 @@ GameObject:
   - component: {fileID: 4213350490502890}
   - component: {fileID: 33567435745047272}
   - component: {fileID: 23871419841256232}
-  - component: {fileID: 114845814168297784}
   - component: {fileID: 114823478777545520}
   - component: {fileID: 61672192827425198}
+  - component: {fileID: 114988868117011208}
+  - component: {fileID: 114861492046089050}
   m_Layer: 11
   m_Name: MI
   m_TagString: Player2
@@ -159,7 +160,23 @@ MonoBehaviour:
   Skin: 0.015
   HorizontalRayCount: 4
   VerticalRayCount: 4
---- !u!114 &114845814168297784
+--- !u!114 &114861492046089050
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1053418880186406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d34897665fb2e448b800109499f1e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Partner: {fileID: 0}
+  CameraPath:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &114988868117011208
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,13 +188,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JumpHeight: 4
-  TimeToApex: 1
+  TimeToApex: 0.3
   AccelerationTimeAirBourne: 0.05
   AccelerationTimeGrounded: 0.05
-  MoveSpeed: 4
-  GLIDING: 0
+  MoveSpeed: 6
   WallJump: {x: 0, y: 0}
-  WallSlideSpeedMax: 0
+  WallSlideSpeedMax: 3
+  TimeTillGlide: 0.25
   Gravity: 0
   JumpVelocity: 0
   CanJump: 0

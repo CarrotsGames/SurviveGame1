@@ -11,6 +11,8 @@ public class DSplitScript : MonoBehaviour
     public Color bg2;					//colour slot two
      GameObject PlayerGameObj;
     GameObject PlayerGameObj2;
+    [HideInInspector]
+    public int LEVELTRACK = -1;
 
     GameObject cameraShaderScript;
     GameObject backDrop;
