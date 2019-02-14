@@ -11,6 +11,7 @@ TagManager:
   - BLOCK
   - DSplitManager
   - CamPath
+  - DSplitOff
   layers:
   - Default
   - TransparentFX
