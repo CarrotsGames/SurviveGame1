@@ -7,6 +7,10 @@ TagManager:
   - D1
   - D2
   - Player2
+  - EndLevel
+  - BLOCK
+  - DSplitManager
+  - CamPath
   layers:
   - Default
   - TransparentFX

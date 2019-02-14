@@ -138,7 +138,7 @@ public class PlayerPhysics : MonoBehaviour
 
             if (hit)
             {
-                Debug.Log("Grounded");
+              //  Debug.Log("Grounded");
                 PlayerScript.CanJump = true;
                 Velocity.y = (hit.distance - Skin) * directionY;
                 rayLength = hit.distance;
