@@ -11,10 +11,11 @@ public class PlayerController : MonoBehaviour {
     public float AccelerationTimeAirBourne = .2f;
     public float AccelerationTimeGrounded = .1f;
     public float MoveSpeed = 6;
- 
-    // public Vector2 WallJumpClimb;
-    // public Vector2 WallJumpOff;
-    // public Vector2 WallLeap;
+
+
+    GameObject Player1;
+    GameObject Player2;
+
     public Vector2 WallJump;
 
     public float WallSlideSpeedMax;
@@ -27,9 +28,12 @@ public class PlayerController : MonoBehaviour {
     bool CanGlide;
     float Apex;
     float grav;
+    bool a;
+    bool b;
     int Gliding = 0;
-
-     Vector3 Velocity;
+    // Picks which player is leading whom
+    int PlayerControl;
+    Vector3 Velocity;
     PlayerPhysics playerphys;
     private void Start()
     {
@@ -41,6 +45,9 @@ public class PlayerController : MonoBehaviour {
         JumpVelocity = Mathf.Abs(Gravity) * TimeToApex;
         CanJump = true;
         CanGlide = false;
+        Player1 = GameObject.FindGameObjectWithTag("Player");
+        Player2 = GameObject.FindGameObjectWithTag("Player2");
+
     }
 
     void Update()
@@ -99,6 +106,14 @@ public class PlayerController : MonoBehaviour {
                 {
                     TimeToApex = 1;
                     Gravity = -(2 * JumpHeight) / Mathf.Pow(TimeToApex, 2);
+                 }
+
+                if(TimeTillGlide <= -1)
+                {
+                    TimeToApex = 1;
+                    Gravity = -(2 * JumpHeight) / Mathf.Pow(TimeToApex, 2);
+                    Velocity.y = -2.45f;
+
                 }
             }
              if (XCI.GetButtonDown(XboxButton.A))
@@ -133,5 +148,31 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Hithead");
         }
     }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        
+        if (tag == "Player" && b == false)
+        {
  
+            if (other.gameObject.tag == "DSplitOff")
+            {
+                 a = true;
+                Player2.transform.position = transform.position + new Vector3(-1.5f, 0, 0);
+                PlayerControl = 1;
+
+            }
+        }
+
+        if (tag == "Player2" && a == false)
+        {
+             if (other.gameObject.tag == "DSplitOff")
+            {
+                b = true;
+                Player1.transform.position = transform.position + new Vector3(-1.5f, 0, 0);
+                PlayerControl = 2;
+            }
+        }
+    }
+
 }
