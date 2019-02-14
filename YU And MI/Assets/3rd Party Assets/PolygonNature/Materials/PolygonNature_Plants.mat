@@ -85,7 +85,7 @@ Material:
     m_Floats:
     - _Big_Wave: 9.65
     - _Big_WindAmount: 0.2
-    - _Big_Windspeed: 0.13
+    - _Big_Windspeed: 0.25
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
