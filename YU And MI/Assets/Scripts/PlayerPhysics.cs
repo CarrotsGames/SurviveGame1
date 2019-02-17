@@ -1,38 +1,32 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using XboxCtrlrInput;
-public class PlayerPhysics : MonoBehaviour
+public class PlayerPhysics : RaycastController
 {
-    public LayerMask CollisionMask;
-    BoxCollider2D PlayerCollider;
 
     public float MaxClimbAngle = 80;
     public float MaxDescendAngle = 80;
 
-    public float Skin = 0.015f;
     GameObject PlayerGameObj;
     GameObject PlayerGameObj2;
 
     PlayerController PlayerScript;
     PlayerController PlayerScript2;
 
-    public int HorizontalRayCount = 4;
-    public int VerticalRayCount = 4;
+  
 
-    float HorizontalRaySpacing;
-    float VerticalRaySpacing;
+
     public CollisionInfo Collisions;
-    RaycastOrigins raycastOrigins;
 
-    void Start()
+    public override void Start()
     {
-        PlayerCollider = GetComponent<BoxCollider2D>();
+        base.Start();
+        Collisions.FaceDir = 1; 
+
         PlayerGameObj = GameObject.FindGameObjectWithTag("Player");
         PlayerScript = PlayerGameObj.GetComponent<PlayerController>();
         PlayerGameObj2 = GameObject.FindGameObjectWithTag("Player2");
         PlayerScript2 = PlayerGameObj.GetComponent<PlayerController>();
-        CalculateRaySpacing();
-        Collisions.FaceDir = 1; 
     }
 
     public void Move(Vector3 velocity)
@@ -169,34 +163,7 @@ public class PlayerPhysics : MonoBehaviour
         }
     }
 
-    void UpdateRaycastOrigins()
-    {
-        Bounds Bounds = PlayerCollider.bounds;
-        Bounds.Expand(Skin * -2);
 
-        raycastOrigins.bottomLeft = new Vector2(Bounds.min.x, Bounds.min.y);
-        raycastOrigins.bottomRight = new Vector2(Bounds.max.x, Bounds.min.y);
-        raycastOrigins.topLeft = new Vector2(Bounds.min.x, Bounds.max.y);
-        raycastOrigins.topRight = new Vector2(Bounds.max.x, Bounds.max.y);
-    }
-
-    void CalculateRaySpacing()
-    {
-        Bounds Bounds = PlayerCollider.bounds;
-        Bounds.Expand(Skin * -2);
-
-        HorizontalRayCount = Mathf.Clamp(HorizontalRayCount, 2, int.MaxValue);
-        VerticalRayCount = Mathf.Clamp(VerticalRayCount, 2, int.MaxValue);
-
-        HorizontalRaySpacing = Bounds.size.y / (HorizontalRayCount - 1);
-        VerticalRaySpacing = Bounds.size.x / (VerticalRayCount - 1);
-    }
-
-    struct RaycastOrigins
-    {
-        public Vector2 topLeft, topRight;
-        public Vector2 bottomLeft, bottomRight;
-    }
     void ClimbSlope(ref Vector3 velocity, float SlopeAngle)
     {
         float moveDistance = Mathf.Abs(velocity.x);

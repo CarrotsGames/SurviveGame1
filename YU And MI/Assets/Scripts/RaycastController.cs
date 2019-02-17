@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+using System.Collections;
 [RequireComponent(typeof(BoxCollider2D))]
 
 public class RaycastController : MonoBehaviour
@@ -10,37 +8,48 @@ public class RaycastController : MonoBehaviour
     public float Skin = 0.015f;
     public int HorizontalRayCount = 4;
     public int VerticalRayCount = 4;
+    [HideInInspector]
     public float HorizontalRaySpacing;
-    public float VerticalRaySpacing;
+    [HideInInspector]
 
-    public BoxCollider2D PlayerCollider;
+    public float VerticalRaySpacing;
+   public BoxCollider2D PlayerCollider;
 
     public RaycastOrigins raycastOrigins;
 
     // Use this for initialization
-    void Start()
+    public virtual void Start()
     {
-        PlayerCollider = GetComponent<BoxCollider2D>();
-        CalculateRaySpacing();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
+         PlayerCollider = GetComponent<BoxCollider2D>();
+         CalculateRaySpacing();
 
     }
 
-   public void UpdateRaycastOrigins()
+ 
+  public  void UpdateRaycastOrigins()
     {
+        // Bounds are NOT equal to the cubes box collider 
         Bounds Bounds = PlayerCollider.bounds;
         Bounds.Expand(Skin * -2);
 
+        // Points of the collider 
+        //[WORKS PERFECTLY]
+        // Bot left collision
         raycastOrigins.bottomLeft = new Vector2(Bounds.min.x, Bounds.min.y);
+        // Bot Right collision
         raycastOrigins.bottomRight = new Vector2(Bounds.max.x, Bounds.min.y);
-        raycastOrigins.topLeft = new Vector2(Bounds.min.x, Bounds.max.y);
-        raycastOrigins.topRight = new Vector2(Bounds.max.x, Bounds.max.y);
-    }
 
+        //[DOESNET WORK PERFECTLY]
+        // Top Left
+        raycastOrigins.topLeft = new Vector2(Bounds.min.x, Bounds.max.y  );
+       // top Right
+        raycastOrigins.topRight = new Vector2(Bounds.max.x, Bounds.max.y);
+
+        // DEBUG raycast is in scene for a better look  
+        // Attaching to untiy and playing scene will take you to the stuff thats not working 
+        // EG Bounds transform is not displaying the cubes transfom
+    }
     public void CalculateRaySpacing()
     {
         Bounds Bounds = PlayerCollider.bounds;
@@ -53,7 +62,8 @@ public class RaycastController : MonoBehaviour
         VerticalRaySpacing = Bounds.size.x / (VerticalRayCount - 1);
     }
 
-    public struct RaycastOrigins
+
+   public struct RaycastOrigins
     {
         public Vector2 topLeft, topRight;
         public Vector2 bottomLeft, bottomRight;
