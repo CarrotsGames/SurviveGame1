@@ -9,13 +9,14 @@ public class CameraFollowScript : MonoBehaviour
     public GameObject Partner;
       GameObject CameraPath;
     bool CamMove = false;
+    bool Following = false;
      float CamMoveTime = 1;
 
     private void Start()
     {
         CameraPath = GameObject.FindGameObjectWithTag("CamPath");
         DsplitManager = GameObject.FindGameObjectWithTag("DSplitManager");
-
+        Following = false;
         DsplitManagerScript = DsplitManager.GetComponent<DSplitScript>();
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
     }
@@ -36,7 +37,12 @@ public class CameraFollowScript : MonoBehaviour
                 CamMoveTime = 1;
             }
         }
-     
+        if(Following)
+        {
+            Partner.transform.position = transform.position + new Vector3(-1.5f, 0, 0);
+
+        }
+
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -47,6 +53,15 @@ public class CameraFollowScript : MonoBehaviour
 
             CamMove = true;
          }
+        if(other.gameObject.tag == "Follow")
+        {
+            Destroy(other.gameObject);
 
+            Following = true;
+        }
+        if(other.gameObject.tag == "StopFollow")
+        {
+            Following = false;
+        }
     }
 }

@@ -12,6 +12,7 @@ TagManager:
   - DSplitManager
   - CamPath
   - DSplitOff
+  - Follow
   layers:
   - Default
   - TransparentFX
